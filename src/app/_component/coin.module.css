@@ -1,0 +1,27 @@
+.coinButton{
+    width: 100%;
+    border-top: 1px solid gray;
+    display: flex;
+    flex-direction: row;
+}
+.coinButton:hover{
+    background-color: rgba(15,20,25, 0.1); 
+}
+.coinImage{
+    display: flex;
+    padding: 5px 0px 5px 10px;
+}
+.coinImage img{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+.coinName{
+    flex:1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.selectedCoin{
+    background-color: rgba(0,0,0,0.2);
+}

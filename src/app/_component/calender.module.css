@@ -1,0 +1,48 @@
+.dayButton{
+    border: none ;
+    background-color: white ;
+    padding: 3px;
+    border-radius: 50%; 
+
+}
+
+.dayButton:hover  {
+    background-color: rgba(15,20,25, 0.1); /* 투명하게 설정하여 중첩 방지 */
+}
+.dayButton:disabled {
+    color: gray;
+    cursor: default;
+}
+.dayContent{
+    display: flex;
+    flex-direction: column;
+
+
+}
+.dayContent div{
+ 
+    
+}
+.dayButton:disabled .dayContent>div {
+    background-color: white;
+}
+.success{
+    color:blue;
+}
+.fail{
+    color:red;
+}
+.calender{
+    position: absolute; 
+    top: 180px; 
+    left: 50%;
+    transform: translateX(-50%);
+    width: 300px; 
+    height: 400px; 
+    background-color: white;
+    border: 1px solid gray;
+    z-index: 10;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); position: absolute;
+    z-index: 10;
+    border-radius: 16px;
+}
