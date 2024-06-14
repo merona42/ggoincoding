@@ -25,12 +25,15 @@ export default function Home() {
                     꼬인코딩
                 </div>
             </div>
-            <div className={style.showDiv}>
+            <div className={style.homeFixed}>
                 <div className={style.header}>
                     <hr/>
                     <button onClick={onClickCalender}>{dayjs(selectedDate).format('YYYY년 MM월 DD일 dddd')}</button>
-                    
+                        
                 </div>
+            </div>
+            <div className={style.showDiv}>
+                
                 <div className={style.content}>
                     <div className={style.coinLeft}>
                         <CoinList today={selectedDate}/>
@@ -43,7 +46,96 @@ export default function Home() {
                     />}
             </div>
             
-        
+            <div>
+                ㄴ
+            </div>
+            <div>
+                ㄴ
+            </div>
+            <div>
+                ㄴ
+            </div>
+            <div>
+                ㄴ
+            </div>
+            <div>
+                ㄴ
+            </div>
+            <div>
+                ㄴ
+            </div>
+            <div>
+                ㄴ
+            </div>
+            <div>
+                ㄴ
+            </div>
+            <div>
+                ㄴ
+            </div>
+            <div>
+                ㄴ
+            </div>
+            <div>
+                ㄴ
+            </div><div>
+                ㄴ
+            </div><div>
+                ㄴ
+            </div><div>
+                ㄴ
+            </div><div>
+                ㄴ
+            </div><div>
+                ㄴ
+            </div><div>
+                ㄴ
+            </div><div>
+                ㄴ
+            </div><div>
+                ㄴ
+            </div><div>
+                ㄴ
+            </div><div>
+                ㄴ
+            </div><div>
+                ㄴ
+            </div><div>
+                ㄴ
+            </div><div>
+                ㄴ
+            </div><div>
+                ㄴ
+            </div><div>
+                ㄴ
+            </div><div>
+                ㄴ
+            </div><div>
+                ㄴ
+            </div><div>
+                ㄴ
+            </div><div>
+                ㄴ
+            </div><div>
+                ㄴ
+            </div><div>
+                ㄴ
+            </div><div>
+                ㄴ
+            </div><div>
+                ㄴ
+            </div><div>
+                ㄴ
+            </div><div>
+                ㄴ
+            </div><div>
+                ㄴ
+            </div><div>
+                ㄴ
+            </div><div>
+                ㄴ
+            </div>
+
         </div>
     )
 }

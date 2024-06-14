@@ -59,6 +59,7 @@ export const handlers = [
     }),
     http.get('/api/charts/:coinName/:marketType/:today',({request,params})=>{
         const {coinName,marketType,today} = params;
+        let time = new Date(Date.now());
         return HttpResponse.json([
             {
                 Coin: {
@@ -68,8 +69,8 @@ export const handlers = [
                     market_type: marketType,
                     image: '/BTC.png',
                 },
-                timeStamp:new Date(Date.now()-11000),
-                price_diff:1
+                timeStamp:time.setSeconds(time.getSeconds() + 10),
+                price_diff:0.01121
             },
             {
                 Coin: {
@@ -79,8 +80,8 @@ export const handlers = [
                     market_type: marketType,
                     image: '/BTC.png',
                 },
-                timeStamp:new Date(Date.now()-10000),
-                price_diff:2
+                timeStamp:time.setSeconds(time.getSeconds() + 10),
+                price_diff:0.0211
             },
             {
                 Coin: {
@@ -90,8 +91,8 @@ export const handlers = [
                     market_type: marketType,
                     image: '/BTC.png',
                 },
-                timeStamp:new Date(Date.now()-9000),
-                price_diff:3,
+                timeStamp:time.setSeconds(time.getSeconds() + 10),
+                price_diff:0.032112,
 
             },
             {
@@ -102,8 +103,8 @@ export const handlers = [
                     market_type: marketType,
                     image: '/BTC.png',
                 },
-                timeStamp:new Date(Date.now()-7000),
-                price_diff:4,
+                timeStamp:time.setSeconds(time.getSeconds() + 10),
+                price_diff:0.04232,
 
             },
             {
@@ -114,8 +115,8 @@ export const handlers = [
                     market_type: marketType,
                     image: '/BTC.png',
                 },
-                timeStamp:new Date(Date.now()-6000),
-                price_diff:3,
+                timeStamp:time.setSeconds(time.getSeconds() + 10),
+                price_diff:0.031233,
             },
             {
                 Coin: {
@@ -125,8 +126,8 @@ export const handlers = [
                     market_type: marketType,
                     image: '/BTC.png',
                 },
-                timeStamp:new Date(Date.now()-5000),
-                price_diff:5,
+                timeStamp:time.setSeconds(time.getSeconds() + 10),
+                price_diff:0.05242,
             },
             {
                 Coin: {
@@ -136,8 +137,8 @@ export const handlers = [
                     market_type: marketType,
                     image: '/BTC.png',
                 },
-                timeStamp:new Date(Date.now()-4000),
-                price_diff:6,
+                timeStamp:time.setSeconds(time.getSeconds() + 10),
+                price_diff:0.06121,
             },
             {
                 Coin: {
@@ -147,8 +148,8 @@ export const handlers = [
                     market_type: marketType,
                     image: '/BTC.png',
                 },
-                timeStamp:new Date(Date.now()-3000),
-                price_diff:4,
+                timeStamp:time.setSeconds(time.getSeconds() + 10),
+                price_diff:0.041211,
             },
             {
                 Coin: {
@@ -158,8 +159,8 @@ export const handlers = [
                     market_type: marketType,
                     image: '/BTC.png',
                 },
-                timeStamp:new Date(Date.now()-2000),
-                price_diff:7,
+                timeStamp:time.setSeconds(time.getSeconds() + 10),
+                price_diff:0.071232,
 
             },
             {
@@ -170,16 +171,16 @@ export const handlers = [
                     market_type: marketType,
                     image: '/BTC.png',
                 },
-                timeStamp:new Date(Date.now()-1000),
-                price_diff:2,
+                timeStamp:time.setSeconds(time.getSeconds() + 10),
+                price_diff:0.02121,
 
             },
-
             
         ])
     }),
     http.get('/api/trades/:coinName/:marketType/:today',({request,params})=>{
         const {coinName,marketType,today} = params;
+        // return HttpResponse.json([]);
         return HttpResponse.json([
             {
                 Coin: {
@@ -190,7 +191,7 @@ export const handlers = [
                     image: '/BTC.png',
                 },
                 type: 'borrow',
-                timeStamp: new Date(Date.now()-10000),
+                timeStamp:new Date(Date.now()+19000),
                 price: 30000,
             },
             {
@@ -202,7 +203,7 @@ export const handlers = [
                     image: '/BTC.png',
                 },
                 type: 'buy',
-                timeStamp: new Date(Date.now()-8000),
+                timeStamp: new Date(Date.now()+28000),
                 price: 30000,
                 market: 'bitthumb'
             },
@@ -215,10 +216,21 @@ export const handlers = [
                     image: '/BTC.png',
                 },
                 type: 'sell',
-                timeStamp: new Date(Date.now()-5000),
+                timeStamp: new Date(Date.now()+35000),
                 price: 20000,
                 market: 'binance'
             },
         ])
+    }),
+    http.get('/api/tradeCounts',()=>{
+        return HttpResponse.json({
+            '2024-06-03':{success: 2, failure: 4},
+            '2024-06-08':{success: 13, failure: 0},
+            '2024-06-12':{success: 7, failure: 0},
+            '2024-06-13':{success: 3, failure: 1},
+            '2024-06-14':{success: 3, failure: 0},
+            '2024-06-15':{success: 0, failure: 0},
+            '2024-06-16':{success: 0, failure: 1},
+        })
     })
 ]
