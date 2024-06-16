@@ -10,6 +10,8 @@ import cx from "classnames";
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko'; // 한국어 로케일을 임포트
 
+import { CoinLogTable } from "./CoinLogTable";
+
 dayjs.locale('ko'); // 한국어 로케일을 설정
 export default function Home() {
     const{selectedCoin,setSelectedCoin} = useContext(SelectedCoinContext);
@@ -42,99 +44,11 @@ export default function Home() {
                         {selectedCoin ?  <ChartList coin={selectedCoin} today={selectedDate} />:<div className={style.centerDiv} style={{color:'gray'}}>선택된 코인이 없습니다.</div>}
                     </div>
                 </div>
+                <CoinLogTable  /> {/* Add CoinLogTable */}
                 {isShouldShow && <Calender isShouldShow = {isShouldShow} setIsShouldShow = {setIsShouldShow}
                     />}
             </div>
             
-            <div>
-                ㄴ
-            </div>
-            <div>
-                ㄴ
-            </div>
-            <div>
-                ㄴ
-            </div>
-            <div>
-                ㄴ
-            </div>
-            <div>
-                ㄴ
-            </div>
-            <div>
-                ㄴ
-            </div>
-            <div>
-                ㄴ
-            </div>
-            <div>
-                ㄴ
-            </div>
-            <div>
-                ㄴ
-            </div>
-            <div>
-                ㄴ
-            </div>
-            <div>
-                ㄴ
-            </div><div>
-                ㄴ
-            </div><div>
-                ㄴ
-            </div><div>
-                ㄴ
-            </div><div>
-                ㄴ
-            </div><div>
-                ㄴ
-            </div><div>
-                ㄴ
-            </div><div>
-                ㄴ
-            </div><div>
-                ㄴ
-            </div><div>
-                ㄴ
-            </div><div>
-                ㄴ
-            </div><div>
-                ㄴ
-            </div><div>
-                ㄴ
-            </div><div>
-                ㄴ
-            </div><div>
-                ㄴ
-            </div><div>
-                ㄴ
-            </div><div>
-                ㄴ
-            </div><div>
-                ㄴ
-            </div><div>
-                ㄴ
-            </div><div>
-                ㄴ
-            </div><div>
-                ㄴ
-            </div><div>
-                ㄴ
-            </div><div>
-                ㄴ
-            </div><div>
-                ㄴ
-            </div><div>
-                ㄴ
-            </div><div>
-                ㄴ
-            </div><div>
-                ㄴ
-            </div><div>
-                ㄴ
-            </div><div>
-                ㄴ
-            </div>
 
         </div>
     )
