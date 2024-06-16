@@ -6,8 +6,9 @@
 
 }
 
-.dayButton:hover  {
+.dayButton:not(:disabled):hover  {
     background-color: rgba(15,20,25, 0.1); /* 투명하게 설정하여 중첩 방지 */
+    cursor: pointer;
 }
 .dayButton:disabled {
     color: rgb(219, 219, 219);
@@ -41,4 +42,5 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); position: absolute;
     z-index: 10;
     border-radius: 16px;
+    
 }

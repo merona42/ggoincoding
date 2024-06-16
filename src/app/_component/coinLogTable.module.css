@@ -1,0 +1,47 @@
+/* coinLogTable.module.css */
+.container {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 1px solid #ddd;
+    border-radius: 16px;
+    overflow: hidden; /* To ensure rounded corners are applied */
+}
+
+.tableHeader th,
+.tableBody td {
+    text-align: center;
+    padding: 8px;
+    border: 1px solid #ddd;
+}
+
+.tableHeader th {
+    background-color: #f2f2f2;
+}
+
+.tableBody td {
+    background-color: #ffffff;
+}
+
+/* Specific rounded corners for the table */
+.tableHeader th:first-child {
+    border-top-left-radius: 16px;
+}
+
+.tableHeader th:last-child {
+    border-top-right-radius: 16px;
+}
+
+.tableBody tr:last-child td:first-child {
+    border-bottom-left-radius: 16px;
+}
+
+.tableBody tr:last-child td:last-child {
+    border-bottom-right-radius: 16px;
+}
+.success td{
+    background-color: rgba(0,0,255,0.3);
+}
+.fail td{
+    background-color: rgba(255,0,0,0.3);
+}

@@ -9,6 +9,7 @@ import { SelectedDateContext } from "./DateProvider";
 import cx from "classnames";
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko'; // 한국어 로케일을 임포트
+import  CoinLogTable  from "./CoinLogTable";
 
 dayjs.locale('ko'); // 한국어 로케일을 설정
 export default function Home() {
@@ -45,7 +46,9 @@ export default function Home() {
                 {isShouldShow && <Calender isShouldShow = {isShouldShow} setIsShouldShow = {setIsShouldShow}
                     />}
             </div>
-            
+            <div className={style.showLogsDiv}>
+                <CoinLogTable today={selectedDate} /> 
+            </div>
             <div>
                 ㄴ
             </div>

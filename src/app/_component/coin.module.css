@@ -3,9 +3,18 @@
     border-top: 1px solid gray;
     display: flex;
     flex-direction: row;
+    transition-duration: 0.2s;
+    transition-property: background-color;
 }
 .coinButton:hover{
     background-color: rgba(15,20,25, 0.1); 
+    cursor: pointer;
+}
+.coinButton:last-child{
+    border-bottom-left-radius: 16px;
+}
+.coinButton:last-child:hover{
+    border-bottom-left-radius: 16px;
 }
 .coinImage{
     display: flex;
@@ -25,3 +34,4 @@
 .selectedCoin{
     background-color: rgba(0,0,0,0.2);
 }
+

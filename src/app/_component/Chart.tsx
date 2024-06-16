@@ -18,27 +18,36 @@ type Props = {
 
 export default function ChartComponent({ charts, trades }: Props) {
     const threshold = 0.03;
+    const gapThreshold = 20000; // 20초를 밀리초로 변환
+
+    // 모든 timeStamp 값을 Date 객체로 변환합니다.
+    const convertedCharts = charts.map(chart => ({
+        ...chart,
+        timeStamp: new Date(chart.timeStamp)
+    }));
 
     const combinedChartData: ChartData<"bar" | "line", { x: Date, y: number }[], Date> = {
-        labels: charts.map(chart => new Date(chart.timeStamp)),
+        labels: convertedCharts.map(chart => chart.timeStamp),
         datasets: [
             {
-                label: charts[0].Coin.market_type,
+                label: convertedCharts[0].Coin.market_type,
                 type: 'line' as const,
-                data: charts.map(chart => ({ x: new Date(chart.timeStamp), y: chart.price_diff * 100 })), // 값을 퍼센트로 변환
-                borderColor: charts[0].Coin.market_type === 'binance-bitthumb' ? 'rgb(46,209,205)' : 'rgb(112,225,36)',
-                backgroundColor: charts[0].Coin.market_type === 'binance-bitthumb' ? 'rgb(46,209,205)' : 'rgb(112,225,36)',
-                pointBackgroundColor: charts.map(chart => chart.price_diff >= threshold ? 'rgb(197,18,89)' : (charts[0].Coin.market_type === 'binance-bitthumb' ? 'rgb(41,188,185)' : 'rgb(92,193,26)')),
-                pointBorderColor: charts.map(chart => chart.price_diff >= threshold ? 'rgb(197,18,89)' : (charts[0].Coin.market_type === 'binance-bitthumb' ? 'rgb(41,188,185)' : 'rgb(92,193,26)')),
-
+                data: convertedCharts.map(chart => ({ x: chart.timeStamp, y: chart.price_diff * 100 })), // 값을 퍼센트로 변환
+                borderColor: convertedCharts[0].Coin.market_type === 'binance-bitthumb' ? 'rgb(46,209,205)' : 'rgb(112,225,36)',
+                backgroundColor: convertedCharts[0].Coin.market_type === 'binance-bitthumb' ? 'rgb(46,209,205)' : 'rgb(112,225,36)',
+                pointBackgroundColor: /*convertedCharts.map(chart => chart.price_diff >= threshold ? 'rgb(197,18,89)' :*/ (convertedCharts[0].Coin.market_type === 'binance-bitthumb' ? 'rgb(41,188,185)' : 'rgb(92,193,26)'),
+                pointBorderColor: /*convertedCharts.map(chart => chart.price_diff >= threshold ? 'rgb(197,18,89)' : */(convertedCharts[0].Coin.market_type === 'binance-bitthumb' ? 'rgb(41,188,185)' : 'rgb(92,193,26)'),
                 fill: false,
                 yAxisID: 'y-axis-1',
                 segment: {
                     borderColor: (ctx) => {
-                        if ((ctx.p0.parsed.y >= threshold * 100 && ctx.p1.parsed.y >= threshold * 100)) { // 값을 퍼센트로 변환
-                            return 'rgb(234, 21, 106)';
+                        const index = ctx.p1DataIndex;
+                        const prevIndex = index - 1;
+                        if (prevIndex >= 0 && (convertedCharts[index].timeStamp.getTime() - convertedCharts[prevIndex].timeStamp.getTime() >= gapThreshold)) {
+                            return 'rgba(0,0,0,0)'; // 선을 잇지 않음
                         }
-                        return charts[0].Coin.market_type === 'binance-bitthumb' ? 'rgb(46,209,205)' : 'rgb(112,225,36)';
+                        // return (ctx.p0.parsed.y >= threshold * 100 && ctx.p1.parsed.y >= threshold * 100) ? 'rgb(234, 21, 106)' :
+                        //     (convertedCharts[0].Coin.market_type === 'binance-bitthumb' ? 'rgb(46,209,205)' : 'rgb(112,225,36)');
                     }
                 }
             },
@@ -46,7 +55,7 @@ export default function ChartComponent({ charts, trades }: Props) {
                 label: 'Trades',
                 type: 'bar' as const,
                 data: trades.map(trade => ({ x: new Date(trade.timeStamp), y: trade.price })),
-                backgroundColor: trades.map(trade => trade.type === 'buy' ? 'green' : trade.type === 'sell' ? 'rgb(192,63,192)' : 'orange'),
+                backgroundColor: trades.map(trade => trade.isSuccess ? (trade.type === 'buy' ? 'green' : trade.type === 'sell' ? 'rgb(192,63,192)' : 'orange') : 'red'),
                 barThickness: 2,
                 yAxisID: 'y-axis-2',
             }] : [])
@@ -63,7 +72,6 @@ export default function ChartComponent({ charts, trades }: Props) {
                         second: 'HH:mm:ss',
                     },
                 },
-                
                 grid: {
                     display: false, // 수직 격자선을 비활성화
                 },
@@ -109,12 +117,12 @@ export default function ChartComponent({ charts, trades }: Props) {
                     label: function (context: TooltipItem<"bar" | "line">) {
                         if (context.dataset.type === 'line') {
                             const chartIndex = context.dataIndex;
-                            const chart = charts[chartIndex];
+                            const chart = convertedCharts[chartIndex];
                             return `Time: ${dayjs(chart.timeStamp).format('HH:mm:ss') }, Price Diff: ${(chart.price_diff * 100).toFixed(2)}%`; // 툴팁에 퍼센트 표시
                         } else if (context.dataset.type === 'bar') {
                             const tradeIndex = context.dataIndex;
                             const trade = trades![tradeIndex];
-                            return `Type: ${trade.type}, Time: ${dayjs(trade.timeStamp).format('HH:mm:ss')}, Price: ${trade.price}` + (trade.market ? `, Market: ${trade.market}` : '');
+                            return `Type: ${trade.type}, Time: ${dayjs(trade.timeStamp).format('HH:mm:ss')}, Price: ${trade.price}` + (trade.market ? `, Market: ${trade.market}` : '') +`, `+`성공여부: `+(trade.isSuccess ? '성공' : '실패');
                         }
                         return '';
                     }
@@ -138,11 +146,10 @@ export default function ChartComponent({ charts, trades }: Props) {
         }
     };
 
-
     return (
-        <div>
-            <div className={style.chartContainer} style={{ overflowX: 'auto' }}>
-                <Chart type='bar' data={combinedChartData} options={options} />
+        <div style={{ width: '100%'}}>
+            <div className={style.chartContainer} style={{ overflowX: 'auto', width: '100%'} }>
+                <Chart type='bar' data={combinedChartData} options={options}  style={{ width: '100%', height: '500px' }}/>
             </div>
         </div>
     );
