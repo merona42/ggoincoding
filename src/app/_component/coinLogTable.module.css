@@ -39,8 +39,11 @@
 .tableBody tr:last-child td:last-child {
     border-bottom-right-radius: 16px;
 }
-.success td{
+.success_sell td{
     background-color: rgba(0,0,255,0.3);
+}
+.success_repay td{
+    background-color: rgba(0,255,0,0.3);
 }
 .fail td{
     background-color: rgba(255,0,0,0.3);
