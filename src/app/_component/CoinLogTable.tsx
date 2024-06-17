@@ -18,32 +18,24 @@ export default function CoinLogTable({ today }: Probs) {
         <table className={style.container}>
             <thead className={style.tableHeader}>
                 <tr>
-                    <th>ID</th>
+                    <th>Symbol</th>
                     <th>Timestamp</th>
-                    <th>Coin Symbol</th>
-                    <th>Market</th>
-                    <th>Gap</th>
-                    <th>성공 여부</th>
-                    <th>Details</th>
+                    <th>Type</th>
                     <th>Price</th>
+                    <th>Is Success</th>
+                    <th>Details</th>
                 </tr>
             </thead>
             <tbody className={style.tableBody}>
                 {logs?.map(log => (
-                    <tr key={log.id} className={cx({
-                        [style.fail]: log.isSuccess === 0,
-                        [style.success_sell]: log.isSuccess === 1,
-                        [style.success_repay]: log.isSuccess === 2,
-                    })}>
-                        <td>{log.id}</td>
+                    <tr key={log.tradeId}>
+                        <td>{log.Coin.symbol}</td>
                         <td>{dayjs(log.timeStamp).format('YYYY-MM-DD HH:mm:ss')}</td>
-                        <td>{log.coin_symbol}</td>
-                        <td>{log.market}</td>
-                        <td>{log.gap}</td>
-                        {/*<td>{log.isSuccess === 0 ? '실패' : log.isSuccess === 1 ? '판매 성공' : '상환 성공'}</td>*/}
-                        <td>{log.isSuccess}</td>
-                        <td>{log.details}</td>
+                        <td>{log.type}</td>
                         <td>{log.price}</td>
+                        <td>{log.isSuccess ? 'Success' : 'Fail'}</td>
+                        <td className={cx({ [style.success]: log.type === 'buy', 
+                                            [style.fail]: log.type === 'sell' })}>{log.type}</td>
                     </tr>
                 ))}
             </tbody>

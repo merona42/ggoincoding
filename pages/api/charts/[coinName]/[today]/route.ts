@@ -1,30 +1,30 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextApiRequest, NextApiResponse } from 'next';
 import sequelize from '@/lib/sequelize';
 import { QueryTypes } from 'sequelize';
-import { NextApiRequest, NextApiResponse } from 'next';
 import { Chart } from "@/model/Chart";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+    const { _1, coinName, today } = req.query;
     try {
         // 데이터베이스 연결 확인
         await sequelize.authenticate();
         console.log('Connection has been established successfully.');
 
-        // 데이터 쿼리 실행
+        let date = new Date(today);
+        let formattedDate = `${date.getFullYear()}-${('0' + (date.getMonth() + 1)).slice(-2)}-${('0' + date.getDate()).slice(-2)}`;
+
         const result = await sequelize.query(
-            `SELECT * FROM charts`,
+            `SELECT * FROM chart_logs WHERE DATE(timestamp) = '${formattedDate}' AND coin_symbol = '${coinName}'`,
             { type: QueryTypes.SELECT }
         );
 
         // 쿼리 결과를 Trades 인터페이스에 맞게 변환
         const charts: Chart[] = result.map((row: any) => ({
             Coin: {
-                coinId: row["coinId"],
-                name: row["name"],
-                symbol: row["symbol"],
-                market_type: row["market_type"],
+                coinId: 1,
+                symbol: row["coin_symbol"],
             },
-            timeStamp: new Date(row["timeStamp"]),
+            timeStamp: row["timestamp"],
             price_diff: row["gap"],
         }));
 

@@ -2,10 +2,8 @@ import { Coin } from "./Coin";
 
 export interface Trade{
     Coin:Coin,
-    type:'buy'|'sell'|'borrow',
+    type: string,
     timeStamp:Date,
     price: number,
-    market?: string,
-    isSuccess: boolean,
-    details?:string,
+    isSuccess: boolean
 }

@@ -12,13 +12,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         // 데이터 쿼리 실행
         const result = await sequelize.query(
-            `SELECT * FROM trade_logs WHERE DATE(timestamp) = '${today}'`,
+            `SELECT * FROM trade_logs WHERE DATE(timestamp) = '${today}', coin_symbol = '${coinName}'`,
             { type: QueryTypes.SELECT }
         );
 
         // 쿼리 결과를 Trades 인터페이스에 맞게 변환
         const charts: Chart[] = result.map((row: any) => ({
-            tradeId: row["trade_id"],
+            id: row["trade_id"],
             Coin: {
                 coinId: 1,
                 symbol: row["coin_symbol"],
