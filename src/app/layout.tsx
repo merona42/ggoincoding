@@ -6,7 +6,7 @@ import { MSWComponent } from "./_component/MSWComponent";
 import RQProvider from "./_component/RQProvider";
 import CoinProvider from "./_component/CoinProvider";
 import DateProvider from "./_component/DateProvider";
-
+import SelectedBarProvider from './_component/SelectedBarProvider';
 const inter = Inter({ subsets: ["latin"] });
 
 type Probs = {
@@ -20,7 +20,10 @@ export default function RootLayout({children}:Probs){
         <RQProvider>
           <DateProvider>
             <CoinProvider>
-              {children}
+              <SelectedBarProvider>
+                {children}
+              </SelectedBarProvider>
+              
             </CoinProvider>
           </DateProvider>
           

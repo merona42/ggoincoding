@@ -1,26 +1,76 @@
-"use client";
-import { useState } from "react";
+import React, { useContext, useRef, useEffect, MutableRefObject } from "react";
 import { Chart as IChart } from "@/model/Chart";
-import { Chart as ChartJS, registerables, ChartData, ChartOptions, TooltipItem } from "chart.js";
+import { Chart as ChartJS, registerables, ChartData, ChartOptions, TooltipItem, ChartTypeRegistry, Plugin } from "chart.js";
 import { Chart } from "react-chartjs-2";
 import { Trade as ITrade } from "@/model/Trade";
-import 'chartjs-adapter-date-fns'; // date-fns 어댑터 import
-import annotationPlugin from 'chartjs-plugin-annotation'; // annotation 플러그인 import
-import zoomPlugin from 'chartjs-plugin-zoom'; // zoom 플러그인 import
+import 'chartjs-adapter-date-fns';
+import annotationPlugin from 'chartjs-plugin-annotation';
+import zoomPlugin from 'chartjs-plugin-zoom';
 import dayjs from "dayjs";
 import style from "./chart.module.css";
-import cx from "classnames";
+import { SelectedBarContext } from "./SelectedBarProvider";
 ChartJS.register(...registerables, annotationPlugin, zoomPlugin);
 
 type Props = {
     charts: IChart[],
     trades: ITrade[] | undefined,
+    selectedBar: any
 }
 
-export default function ChartComponent({ charts, trades }: Props) {
+const borderPlugin: Plugin<'bar' | 'line'> = {
+    id: 'borderPlugin',
+    beforeDraw: (chart, args, options) => {
+        const { ctx, chartArea: { left, right, top, bottom }, scales: { x, y } } = chart;
+        const selectedBar = options.selectedBar; // Access selectedBar from plugin options
+        if (selectedBar) {
+            const tradeTimestamp = new Date(selectedBar.timeStamp).getTime();
+            chart.data.datasets.forEach((dataset, datasetIndex) => {
+                if (dataset.type === 'bar') {
+                    (dataset.data as unknown as { x: Date, y: number }[]).forEach((dataPoint, index) => {
+                        if (typeof dataPoint === 'object' && dataPoint !== null && 'x' in dataPoint && 'y' in dataPoint) {
+                            const barTimestamp = new Date(dataPoint.x).getTime();
+                            if (barTimestamp === tradeTimestamp) {
+                                const meta = chart.getDatasetMeta(datasetIndex);
+                                const bar = meta.data[index];
+                                const { x: barX, y: barY, width: barWidth, height: barHeight } = bar.getProps(['x', 'y', 'width', 'height'], false);
+                                ctx.save();
+                                ctx.strokeStyle = 'red';
+                                ctx.lineWidth = 2;
+                                ctx.strokeRect(barX - barWidth / 2 - 4, barY - 7, barWidth + 8, barHeight + 8);
+                                ctx.restore();
+                            }
+                        }
+                    });
+                }
+            });
+        }
+    }
+};
+
+ChartJS.register(borderPlugin);
+
+// 확장된 타입 정의
+type ExtendedChartOptions<TType extends keyof ChartTypeRegistry> = ChartOptions<TType> & {
+    plugins: {
+        borderPlugin?: { selectedBar: any };
+    };
+};
+
+export default function ChartComponent({ charts, trades, selectedBar }: Props) {
+    const chartRef = useRef<ChartJS<'bar' | 'line', { x: Date, y: number }[], unknown>>(null);
     const threshold = 0.03;
     const gapThreshold = 20000; // 20초를 밀리초로 변환
-
+    const colorMappingTable: { [key: string]: string }={
+        "전송 불가":'red',
+        "대출 실패":'red',
+        "전송 실패":'red',
+        "판매 실패 : 오류 발생":'red',
+        "판매 실패 : 프리미엄 미달":'red',
+        "바이백 실패":'red',
+        "상환 실패":'red',
+        "판매 성공":'rgb(29,232,237)',
+        "상환 성공":'rgb(198,33,233)',
+    }
     // 모든 timeStamp 값을 Date 객체로 변환합니다.
     const convertedCharts = charts.map(chart => ({
         ...chart,
@@ -35,9 +85,9 @@ export default function ChartComponent({ charts, trades }: Props) {
                 type: 'line' as const,
                 data: convertedCharts.map(chart => ({ x: chart.timeStamp, y: chart.price_diff * 100 })), // 값을 퍼센트로 변환
                 borderColor: 'rgb(46,209,205)',
-                backgroundColor: 'rgb(46,209,205)', 
-                pointBackgroundColor: /*convertedCharts.map(chart => chart.price_diff >= threshold ? 'rgb(197,18,89)' :*/ 'rgb(41,188,185)',
-                pointBorderColor: /*convertedCharts.map(chart => chart.price_diff >= threshold ? 'rgb(197,18,89)' : */'rgb(41,188,185)',
+                backgroundColor: 'rgb(46,209,205)',
+                pointBackgroundColor: 'rgb(41,188,185)',
+                pointBorderColor: 'rgb(41,188,185)',
                 fill: false,
                 yAxisID: 'y-axis-1',
                 segment: {
@@ -47,26 +97,20 @@ export default function ChartComponent({ charts, trades }: Props) {
                         if (prevIndex >= 0 && (convertedCharts[index].timeStamp.getTime() - convertedCharts[prevIndex].timeStamp.getTime() >= gapThreshold)) {
                             return 'rgba(0,0,0,0)'; // 선을 잇지 않음
                         }
-                        // return (ctx.p0.parsed.y >= threshold * 100 && ctx.p1.parsed.y >= threshold * 100) ? 'rgb(234, 21, 106)' :
-                        //     (convertedCharts[0].Coin.market_type === 'binance-bitthumb' ? 'rgb(46,209,205)' : 'rgb(112,225,36)');
                     }
                 }
             },
             ...(trades ? trades.map((trade, index) => ({
-                label: trade.isSuccess ? (trade.type ) : 'fail',
+                label: trade.isSuccess ? trade.type : '실패',
                 type: 'bar' as const,
                 data: [{ x: new Date(trade.timeStamp), y: trade.price }],
-                backgroundColor: trade.isSuccess ? (trade.type === 'buy' ? 'green' : trade.type === 'sell' ? 'rgb(192,63,192)' : 'orange') : 'red',
-                barThickness: 2,
+                backgroundColor: trade.isSuccess ?  colorMappingTable[trade.type]: 'red',
                 yAxisID: 'y-axis-2',
-                className: cx({
-                    [style.isSelected]: trade.isSuccess,
-                })
             })) : [])
         ],
     };
 
-    const options: ChartOptions<"bar" | "line"> = {
+    const options: ExtendedChartOptions<"bar" | "line"> = {
         scales: {
             x: {
                 type: 'time', // 명시적으로 "time"으로 설정
@@ -84,7 +128,7 @@ export default function ChartComponent({ charts, trades }: Props) {
                 type: 'linear',
                 position: 'left',
                 ticks: {
-                    callback: function(value) {
+                    callback: function (value) {
                         return `${value}%`; // Y축 레이블에 퍼센트 표시
                     }
                 }
@@ -122,11 +166,11 @@ export default function ChartComponent({ charts, trades }: Props) {
                         if (context.dataset.type === 'line') {
                             const chartIndex = context.dataIndex;
                             const chart = convertedCharts[chartIndex];
-                            return `Time: ${dayjs(chart.timeStamp).format('HH:mm:ss') }, Price Diff: ${(chart.price_diff * 100).toFixed(2)}%`; // 툴팁에 퍼센트 표시
+                            return `Time: ${dayjs(chart.timeStamp).format('HH:mm:ss')}, Price Diff: ${(chart.price_diff * 100).toFixed(2)}%`; // 툴팁에 퍼센트 표시
                         } else if (context.dataset.type === 'bar') {
                             const tradeIndex = context.dataIndex;
                             const trade = trades![tradeIndex];
-                            return `Type: ${trade.type}, Time: ${dayjs(trade.timeStamp).format('HH:mm:ss')}, Price: ${trade.price}` + (trade.market ? `, Market: ${trade.market}` : '') +`, `+`성공여부: `+(trade.isSuccess ? '성공' : '실패');
+                            return `Type: ${trade.type}, Time: ${dayjs(trade.timeStamp).format('HH:mm:ss')}, Price: ${trade.price}` + `, ` + `성공여부: ` + (trade.isSuccess ? '성공' : '실패');
                         }
                         return '';
                     }
@@ -146,14 +190,23 @@ export default function ChartComponent({ charts, trades }: Props) {
                     },
                     mode: 'x',
                 }
+            },
+            borderPlugin: {
+                selectedBar: selectedBar // Pass selectedBar to the plugin options
             }
         }
     };
 
+    useEffect(() => {
+        if (chartRef.current) {
+            chartRef.current.update();
+        }
+    }, [selectedBar]);
+
     return (
-        <div style={{ width: '100%'}}>
-            <div className={style.chartContainer} style={{ overflowX: 'auto', width: '100%'} }>
-                <Chart type='bar' data={combinedChartData} options={options}  style={{ width: '100%', height: '500px' }}/>
+        <div style={{ width: '100%' }}>
+            <div className={style.chartContainer} style={{ overflowX: 'auto', width: '100%' }}>
+                <Chart ref={chartRef} type='bar' data={combinedChartData} options={options} style={{ width: '100%', height: '500px' }} />
             </div>
         </div>
     );

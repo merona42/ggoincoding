@@ -4,13 +4,13 @@ import { useQuery } from "@tanstack/react-query"
 import { getCoins } from "../_lib/getCoins"
 import { Coin as ICoin} from "@/model/Coin"
 import Coin from "./Coin"
-
+import dayjs from "dayjs"
 type Probs = {
     today: Date
 }
 export default function CoinList({today}:Probs){
     const {data}= useQuery({
-        queryKey:['coins',today.toDateString()],
+        queryKey:['coins',dayjs(today).format('YYYY-MM-DD')],
         queryFn: getCoins
     })
 

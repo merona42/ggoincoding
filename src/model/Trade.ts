@@ -1,11 +1,10 @@
-import { Coin } from "./Coin";
+import { Coin as ICoin } from "./Coin";
 
 export interface Trade{
-    Coin:Coin,
-    type:'buy'|'sell'|'borrow',
-    timeStamp:Date,
-    price: number,
-    market?: string,
-    isSuccess: boolean,
-    details?:string,
+    tradeId: number;
+    Coin:ICoin;
+    timeStamp: Date;
+    type: string;
+    price: number;
+    isSuccess: boolean;    
 }

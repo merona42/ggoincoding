@@ -5,41 +5,52 @@ import { useQuery } from '@tanstack/react-query';
 import style from './coinLogTable.module.css';
 import dayjs from "dayjs";
 import cx from "classnames";
-import { Coin as ICoin} from '@/model/Coin';
+import { useContext, useState } from 'react';
+import { SelectedCoinContext } from './CoinProvider';
+import { SelectedBarContext } from './SelectedBarProvider';
+import { Trade as ITrade } from '@/model/Trade';
 type Probs={
     today: Date,
-    selectedShowCoin: ICoin | undefined,
-    setSelectedShowCoin:(value: ICoin | undefined) => void
+    scrollToShowDiv:()=>void,
 }
-export default function CoinLogTable({today,selectedShowCoin, setSelectedShowCoin} : Probs) {
+export default function CoinLogTable({today,scrollToShowDiv} : Probs) {
+    const {selectedCoin,setSelectedCoin} = useContext(SelectedCoinContext);
+    const {selectedBar,setSelectedBar} = useContext(SelectedBarContext);
+    const [selectedTr,setSelectedTr] = useState(-1);
     const {data: logs}= useQuery({
-        queryKey:['logs',today.toDateString()],
+        queryKey:['logs',dayjs(today).format('YYYY-MM-DD')],
         queryFn:getLogs
     })
-    const trOnClick=(symbol : string)=>{
-        setSelectedShowCoin(symbol);
+    const trOnClick=(log :ITrade )=>{
+        setSelectedCoin(log.Coin.symbol);
+        setSelectedBar(log);
+        scrollToShowDiv();
+        setSelectedTr(log.tradeId);
     }
     return (
         <table className={style.container}>
             <thead className={style.tableHeader}>
                 <tr>
-                    <th>ID</th>
+                    <th>Symbol</th>
                     <th>Timestamp</th>
-                    <th>Coin Symbol</th>
-                    <th>Market</th>
-                    <th>Gap</th>
-                    <th>성공 여부</th>
+                    <th>Type</th>
+                    <th>Price</th>
+                    <th>Is Success</th>
+                    <th>Details</th>
+
                 </tr>
             </thead>
             <tbody className={style.tableBody}>
                 {logs?.map(log => (
-                    <tr key={log.id}
-                    onClick={()=>trOnClick(log.coin_symbol)} className={cx({[style.success]: log.isSuccess,[style.fail]:!log.isSuccess})} >
-                        <td>{log.id}</td>
+                    <tr key={log.tradeId}
+                    onClick={()=>trOnClick(log)} className={cx(style.tableTr,{[style.success]: log.isSuccess,[style.fail]:!log.isSuccess,
+                        [style.isSelectedTr]:selectedTr===log.tradeId
+                    }
+                    )} >
+                        <td>{log.Coin.symbol}</td>
                         <td>{dayjs(log.timeStamp).format('YYYY-MM-DD HH:mm:ss')}</td>
-                        <td>{log.coin_symbol}</td>
-                        <td>{log.market}</td>
-                        <td>{log.gap}</td>
+                        <td>{log.type}</td>
+                        <td>{log.price}</td>
                         <td>{log.isSuccess ? '성공' : '실패'}</td>
                     </tr>
                 ))}

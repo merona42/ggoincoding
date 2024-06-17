@@ -1,11 +1,11 @@
 //src\app\_lib\getLogs.ts
-import { Logs } from "@/model/Logs";
+import { Trade as ITrade } from "@/model/Trade";
 import { QueryFunction } from "@tanstack/react-query";
 
-export const getLogs: QueryFunction<Logs[], [_1: string, today: string]>
+export const getLogs: QueryFunction<ITrade[], [_1: string, today: string]>
   = async ({ queryKey }) => {
     const [_1, today] = queryKey;
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/logs/${today}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/logs/${today}/route`, {
       next: {
         'tags': ['logs', today]
       }

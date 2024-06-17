@@ -1,24 +1,24 @@
 
 module.exports = {
   development: {
-    username: "root",
+    username: "inha07",
     password: process.env.SEQUELIZE_PASSWORD,
-    database: "ggoincoding",
-    host: "127.0.0.1",
+    database: "gg_f_db",
+    host: "gimp-log-rds-07.cxeaceo4qj3m.ap-southeast-1.rds.amazonaws.com",
     dialect: "mysql"
   },
   test: {
-    username: "root",
+    username: "inha07",
     password: process.env.SEQUELIZE_PASSWORD,
-    database: "ggoincoding_test",
-    host: "127.0.0.1",
+    database: "gg_f_db_test",
+    host: "gimp-log-rds-07.cxeaceo4qj3m.ap-southeast-1.rds.amazonaws.com",
     dialect: "mysql"
   },
   production: {
-    username: "root",
+    username: "inha07",
     password: process.env.SEQUELIZE_PASSWORD,
-    database: "ggoincoding",
-    host: "127.0.0.1",
+    database: "gg_f_db",
+    host: "gimp-log-rds-07.cxeaceo4qj3m.ap-southeast-1.rds.amazonaws.com",
     dialect: "mysql",
     logging: false,
   }

@@ -1,5 +1,5 @@
 "use client";
-import { useContext, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import ChartList from "./ChartList"
 import CoinList from "./CoinList"
 import style from "./home.module.css"
@@ -16,13 +16,19 @@ export default function Home() {
     const{selectedCoin,setSelectedCoin} = useContext(SelectedCoinContext);
     const { selectedDate, setSelectedDate } = useContext(SelectedDateContext);
     const [isShouldShow, setIsShouldShow] = useState(false);
-    const [selectedShowCoin, setSelectedShowCoin] = useState<ICoin | undefined>();
+    const [selectedShowCoin, setSelectedShowCoin] = useState<string | undefined>();
+    const showDivRef = useRef<HTMLDivElement>(null);
     const onClickCalender=()=>{
         setIsShouldShow(!isShouldShow);
     }
+    const scrollToShowDiv = () => {
+        if (showDivRef.current) {
+            showDivRef.current.scrollIntoView({ behavior: "smooth" });
+        }
+    };
     return (
         <div className={style.container}>
-            <div className={style.containerHeader}>
+            <div className={style.containerHeader} ref={showDivRef}>
                 <div>
                     꼬인코딩
                 </div>
@@ -41,105 +47,16 @@ export default function Home() {
                         <CoinList today={selectedDate}/>
                     </div>
                     <div className={cx(style.graphRight, {[style.center]: !selectedCoin})}>      
-                        {selectedCoin ?  <ChartList coin={selectedCoin} today={selectedDate} />:<div className={style.centerDiv} style={{color:'gray'}}>선택된 코인이 없습니다.</div>}
+                        {selectedCoin ?  <ChartList coin={selectedCoin} today={selectedDate}   />:<div className={style.centerDiv} style={{color:'gray'}}>선택된 코인이 없습니다.</div>}
                     </div>
                 </div>
                 {isShouldShow && <Calender isShouldShow = {isShouldShow} setIsShouldShow = {setIsShouldShow}
                     />}
             </div>
             <div className={style.showLogsDiv}>
-                <CoinLogTable today={selectedDate} selectedShowCoin={selectedShowCoin} setSelectedShowCoin={setSelectedShowCoin}/> 
+                <CoinLogTable today={selectedDate} scrollToShowDiv={scrollToShowDiv} /> 
             </div>
-            <div>
-                ㄴ
-            </div>
-            <div>
-                ㄴ
-            </div>
-            <div>
-                ㄴ
-            </div>
-            <div>
-                ㄴ
-            </div>
-            <div>
-                ㄴ
-            </div>
-            <div>
-                ㄴ
-            </div>
-            <div>
-                ㄴ
-            </div>
-            <div>
-                ㄴ
-            </div>
-            <div>
-                ㄴ
-            </div>
-            <div>
-                ㄴ
-            </div>
-            <div>
-                ㄴ
-            </div><div>
-                ㄴ
-            </div><div>
-                ㄴ
-            </div><div>
-                ㄴ
-            </div><div>
-                ㄴ
-            </div><div>
-                ㄴ
-            </div><div>
-                ㄴ
-            </div><div>
-                ㄴ
-            </div><div>
-                ㄴ
-            </div><div>
-                ㄴ
-            </div><div>
-                ㄴ
-            </div><div>
-                ㄴ
-            </div><div>
-                ㄴ
-            </div><div>
-                ㄴ
-            </div><div>
-                ㄴ
-            </div><div>
-                ㄴ
-            </div><div>
-                ㄴ
-            </div><div>
-                ㄴ
-            </div><div>
-                ㄴ
-            </div><div>
-                ㄴ
-            </div><div>
-                ㄴ
-            </div><div>
-                ㄴ
-            </div><div>
-                ㄴ
-            </div><div>
-                ㄴ
-            </div><div>
-                ㄴ
-            </div><div>
-                ㄴ
-            </div><div>
-                ㄴ
-            </div><div>
-                ㄴ
-            </div><div>
-                ㄴ
-            </div>
-
+            
         </div>
     )
 }

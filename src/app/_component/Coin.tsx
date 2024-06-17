@@ -22,7 +22,7 @@ export default function Coin({coin}:Probs){
     return (
         <div onClick={onClick} 
         className={cx(style.coinButton, {
-            [style.selectedCoin]: selectedCoin && selectedCoin === coin
+            [style.selectedCoin]: selectedCoin && selectedCoin.toLowerCase() === coin.toLowerCase()
         })}>
             <div className={style.coinImage}>
                 <img src={nowCoin?.coinImage} alt={nowCoin?.coinKoreanName}/>

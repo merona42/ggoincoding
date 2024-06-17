@@ -48,7 +48,7 @@ export const handlers = [
                     symbol: 'BTC',
                     image: '/BTC.png',
                 },
-                timeStamp:time.setSeconds(time.getSeconds() + 10),
+                timeStamp:"2024-06-18T00:31:00Z",
                 price_diff:0.01121
             },
             {
@@ -58,7 +58,7 @@ export const handlers = [
                     symbol: 'BTC',
                     image: '/BTC.png',
                 },
-                timeStamp:time.setSeconds(time.getSeconds() + 10),
+                timeStamp:"2024-06-18T00:31:10Z",
                 price_diff:0.0211
             },
             {
@@ -68,7 +68,7 @@ export const handlers = [
                     symbol: 'BTC',
                     image: '/BTC.png',
                 },
-                timeStamp:time.setSeconds(time.getSeconds() + 10),
+                timeStamp:"2024-06-18T00:31:20Z",
                 price_diff:0.032112,
 
             },
@@ -79,7 +79,7 @@ export const handlers = [
                     symbol: 'BTC',
                     image: '/BTC.png',
                 },
-                timeStamp:time.setSeconds(time.getSeconds() + 10),
+                timeStamp:"2024-06-18T00:31:25Z",
                 price_diff:0.04232,
 
             },
@@ -90,7 +90,7 @@ export const handlers = [
                     symbol: 'BTC',
                     image: '/BTC.png',
                 },
-                timeStamp:time.setSeconds(time.getSeconds() + 10),
+                timeStamp:"2024-06-18T00:31:30Z",
                 price_diff:0.031233,
             },
             {
@@ -100,7 +100,7 @@ export const handlers = [
                     symbol: 'BTC',
                     image: '/BTC.png',
                 },
-                timeStamp:time.setSeconds(time.getSeconds() + 10),
+                timeStamp:"2024-06-18T00:31:40Z",
                 price_diff:0.05242,
             },
             {
@@ -110,7 +110,7 @@ export const handlers = [
                     symbol: 'BTC',
                     image: '/BTC.png',
                 },
-                timeStamp:time.setSeconds(time.getSeconds() + 10),
+                timeStamp:"2024-06-18T00:31:50Z",
                 price_diff:0.06121,
             },
             {
@@ -120,7 +120,7 @@ export const handlers = [
                     symbol: 'BTC',
                     image: '/BTC.png',
                 },
-                timeStamp:time.setSeconds(time.getSeconds() + 10),
+                timeStamp:"2024-06-18T00:32:00Z",
                 price_diff:0.041211,
             },
             {
@@ -130,7 +130,7 @@ export const handlers = [
                     symbol: 'BTC',
                     image: '/BTC.png',
                 },
-                timeStamp:time.setSeconds(time.getSeconds() + 10),
+                timeStamp:"2024-06-18T00:32:10Z",
                 price_diff:0.071232,
 
             },
@@ -141,7 +141,7 @@ export const handlers = [
                     symbol: 'BTC',
                     image: '/BTC.png',
                 },
-                timeStamp:time.setSeconds(time.getSeconds() + 10),
+                timeStamp:"2024-06-18T00:32:20Z",
                 price_diff:0.02121,
 
             },
@@ -152,7 +152,7 @@ export const handlers = [
                     symbol: 'BTC',
                     image: '/BTC.png',
                 },
-                timeStamp:time.setSeconds(time.getSeconds() + 30),
+                timeStamp:"2024-06-18T00:32:30Z",
                 price_diff:0.05121,
 
             },
@@ -163,7 +163,7 @@ export const handlers = [
                     symbol: 'BTC',
                     image: '/BTC.png',
                 },
-                timeStamp:time.setSeconds(time.getSeconds() + 10),
+                timeStamp:"2024-06-18T00:32:40Z",
                 price_diff:0.02121,
 
             },
@@ -180,7 +180,7 @@ export const handlers = [
                     symbol: 'BTC',
                 },
                 type: 'borrow',
-                timeStamp:new Date(Date.now()+19000),
+                timeStamp:new Date("2024-06-18T00:31:00Z"),
                 price: 30000,
                 isSuccess: true,
             },
@@ -190,7 +190,7 @@ export const handlers = [
                     symbol: 'BTC',
                 },
                 type: 'buy',
-                timeStamp: new Date(Date.now()+28000),
+                timeStamp: new Date("2024-06-18T00:31:10Z"),
                 price: 30000,
                 market: 'bitthumb',
                 isSuccess: true,
@@ -201,7 +201,7 @@ export const handlers = [
                     symbol: 'BTC',
                 },
                 type: 'sell',
-                timeStamp: new Date(Date.now()+35000),
+                timeStamp: new Date("2024-06-18T00:31:20Z"),
                 price: 20000,
                 market: 'binance',
                 isSuccess: true,
@@ -212,7 +212,7 @@ export const handlers = [
                     symbol: 'BTC',
                 },
                 type: 'sell',
-                timeStamp: new Date(Date.now()+45000),
+                timeStamp: new Date("2024-06-18T00:31:30Z"),
                 price: 20000,
                 market: 'binance',
                 isSuccess: false,
@@ -237,29 +237,29 @@ export const handlers = [
         return HttpResponse.json([
             {
                 id:1,
-                timeStamp:today,
+                timeStamp:"2024-06-18T00:31:00Z",
                 coin_symbol:'BTC',
                 gap: 0.3533,
                 isSuccess: false,
             },
             {
                 id:2,
-                timeStamp:today,
-                coin_symbol:'LMC',
+                timeStamp:"2024-06-18T00:31:10Z",
+                coin_symbol:'ETH',
                 gap: 0.4223,
                 isSuccess: true,
             },
             {
                 id:3,
-                timeStamp:today,
-                coin_symbol:'ATM',
+                timeStamp:"2024-06-18T00:31:20Z",
+                coin_symbol:'xrp',
                 gap: 0.544533,
                 isSuccess: true,
             },
             {
                 id:4,
-                timeStamp:today,
-                coin_symbol:'KCH',
+                timeStamp:"2024-06-18T00:31:30Z",
+                coin_symbol:'ardr',
                 gap: 0.744533,
                 isSuccess: false,
             },
