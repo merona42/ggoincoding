@@ -3,12 +3,13 @@ import { QueryFunction } from "@tanstack/react-query";
 
 
 
-export const getCharts : QueryFunction<Chart[],[_1:string, coinName:string,marketType:string, today:string]>
+export const getCharts : QueryFunction<Chart[],[_1:string, coinName:string, today:string]>
  = async({queryKey})=>{
-    const [_1,coinName,marketType,today] = queryKey;
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/charts/${coinName}/${marketType}/${today}`,{
+    let [_1,coinName,today] = queryKey;
+    coinName = coinName.replace(/\s+/g, '-').toLowerCase();
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/charts/${coinName}/${today}`,{
         next:{
-            tags: ['charts',coinName,marketType,today]
+            tags: ['charts',coinName,today]
         }
     })
     if(!res.ok){

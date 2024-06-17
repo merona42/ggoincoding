@@ -5,15 +5,20 @@ import { useQuery } from '@tanstack/react-query';
 import style from './coinLogTable.module.css';
 import dayjs from "dayjs";
 import cx from "classnames";
+import { Coin as ICoin} from '@/model/Coin';
 type Probs={
     today: Date,
+    selectedShowCoin: ICoin | undefined,
+    setSelectedShowCoin:(value: ICoin | undefined) => void
 }
-export default function CoinLogTable({today} : Probs) {
+export default function CoinLogTable({today,selectedShowCoin, setSelectedShowCoin} : Probs) {
     const {data: logs}= useQuery({
         queryKey:['logs',today.toDateString()],
         queryFn:getLogs
     })
-
+    const trOnClick=(symbol : string)=>{
+        setSelectedShowCoin(symbol);
+    }
     return (
         <table className={style.container}>
             <thead className={style.tableHeader}>
@@ -28,7 +33,8 @@ export default function CoinLogTable({today} : Probs) {
             </thead>
             <tbody className={style.tableBody}>
                 {logs?.map(log => (
-                    <tr key={log.id} className={cx({[style.success]: log.isSuccess,[style.fail]:!log.isSuccess})} >
+                    <tr key={log.id}
+                    onClick={()=>trOnClick(log.coin_symbol)} className={cx({[style.success]: log.isSuccess,[style.fail]:!log.isSuccess})} >
                         <td>{log.id}</td>
                         <td>{dayjs(log.timeStamp).format('YYYY-MM-DD HH:mm:ss')}</td>
                         <td>{log.coin_symbol}</td>

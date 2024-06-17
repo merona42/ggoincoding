@@ -2,63 +2,43 @@ import { HttpResponse, http } from "msw";
 
 
 export const handlers = [
-    http.get('/api/coins/success/:today',({request,params})=>{
-        const {today} = params;
+    http.get('/api/coins/:today',async ({request,params})=>{
         // return HttpResponse.json([]);
         return HttpResponse.json([
             {
                 coinId: 1,
-                name: `비트코인`,
-                symbol: 'BTC',
-                market_type:'binance-bitthumb',
-                image: '/BTC.png',
+                symbol: 'btc',
             },
             {
                 coinId: 2,
-                name: `비트코인`,
-                symbol: 'BTC',
-                market_type:'binance-ubbit',
-                image: '/BTC.png',
+                symbol: 'eth',
             },
             {
                 coinId: 3,
-                name: `이더리움`,
-                symbol: 'ETH',
-                market_type:'binance-bitthumb',
-                image: '/ETH.png',
+                symbol: 'xrp',
             },
             {
                 coinId: 4,
-                name: `폴리매쉬`,
-                symbol: 'POLYX',
-                market_type:'binance-ubbit',
-                image: '/POLYX.png',
+                symbol: 'ardr',
             },
             {
                 coinId: 5,
-                name: `시바이누`,
-                symbol: 'SHIB',
-                market_type:'binance-bitthumb',
-                image: '/SHIB.png',
+                symbol: 'IOTA',
             },
             {
                 coinId: 6,
-                name: `솔라나`,
-                symbol: 'SOL',
-                market_type:'binance-bitthumb',
-                image: '/SOL.png',
+                symbol: 'upp',
             },
             {
                 coinId: 7,
-                name: `스택스`,
-                symbol: 'STX',
-                market_type:'binance-bitthumb',
-                image: '/STX.png',
+                symbol: 'tt',
             },
         ])
-    }),
-    http.get('/api/charts/:coinName/:marketType/:today',({request,params})=>{
-        const {coinName,marketType,today} = params;
+ 
+
+        }),
+    http.get('/api/charts/:coinName/:today',({request,params})=>{
+        const {coinName,today} = params;
         let time = new Date(Date.now());
         return HttpResponse.json([
             {
@@ -66,7 +46,6 @@ export const handlers = [
                     coinId: 1,
                     name: coinName,
                     symbol: 'BTC',
-                    market_type: marketType,
                     image: '/BTC.png',
                 },
                 timeStamp:time.setSeconds(time.getSeconds() + 10),
@@ -77,7 +56,6 @@ export const handlers = [
                     coinId: 1,
                     name: coinName,
                     symbol: 'BTC',
-                    market_type: marketType,
                     image: '/BTC.png',
                 },
                 timeStamp:time.setSeconds(time.getSeconds() + 10),
@@ -88,7 +66,6 @@ export const handlers = [
                     coinId: 1,
                     name: coinName,
                     symbol: 'BTC',
-                    market_type: marketType,
                     image: '/BTC.png',
                 },
                 timeStamp:time.setSeconds(time.getSeconds() + 10),
@@ -100,7 +77,6 @@ export const handlers = [
                     coinId: 1,
                     name: coinName,
                     symbol: 'BTC',
-                    market_type: marketType,
                     image: '/BTC.png',
                 },
                 timeStamp:time.setSeconds(time.getSeconds() + 10),
@@ -112,7 +88,6 @@ export const handlers = [
                     coinId: 1,
                     name: coinName,
                     symbol: 'BTC',
-                    market_type: marketType,
                     image: '/BTC.png',
                 },
                 timeStamp:time.setSeconds(time.getSeconds() + 10),
@@ -123,7 +98,6 @@ export const handlers = [
                     coinId: 1,
                     name: coinName,
                     symbol: 'BTC',
-                    market_type: marketType,
                     image: '/BTC.png',
                 },
                 timeStamp:time.setSeconds(time.getSeconds() + 10),
@@ -134,7 +108,6 @@ export const handlers = [
                     coinId: 1,
                     name: coinName,
                     symbol: 'BTC',
-                    market_type: marketType,
                     image: '/BTC.png',
                 },
                 timeStamp:time.setSeconds(time.getSeconds() + 10),
@@ -145,7 +118,6 @@ export const handlers = [
                     coinId: 1,
                     name: coinName,
                     symbol: 'BTC',
-                    market_type: marketType,
                     image: '/BTC.png',
                 },
                 timeStamp:time.setSeconds(time.getSeconds() + 10),
@@ -156,7 +128,6 @@ export const handlers = [
                     coinId: 1,
                     name: coinName,
                     symbol: 'BTC',
-                    market_type: marketType,
                     image: '/BTC.png',
                 },
                 timeStamp:time.setSeconds(time.getSeconds() + 10),
@@ -168,7 +139,6 @@ export const handlers = [
                     coinId: 1,
                     name: coinName,
                     symbol: 'BTC',
-                    market_type: marketType,
                     image: '/BTC.png',
                 },
                 timeStamp:time.setSeconds(time.getSeconds() + 10),
@@ -180,7 +150,6 @@ export const handlers = [
                     coinId: 1,
                     name: coinName,
                     symbol: 'BTC',
-                    market_type: marketType,
                     image: '/BTC.png',
                 },
                 timeStamp:time.setSeconds(time.getSeconds() + 30),
@@ -192,7 +161,6 @@ export const handlers = [
                     coinId: 1,
                     name: coinName,
                     symbol: 'BTC',
-                    market_type: marketType,
                     image: '/BTC.png',
                 },
                 timeStamp:time.setSeconds(time.getSeconds() + 10),
@@ -202,17 +170,14 @@ export const handlers = [
             
         ])
     }),
-    http.get('/api/trades/:coinName/:marketType/:today',({request,params})=>{
-        const {coinName,marketType,today} = params;
+    http.get('/api/trades/:coinName/:today',({request,params})=>{
+        const {coinName,today} = params;
         // return HttpResponse.json([]);
         return HttpResponse.json([
             {
                 Coin: {
                     coinId: 1,
-                    name: coinName,
                     symbol: 'BTC',
-                    market_type: marketType,
-                    image: '/BTC.png',
                 },
                 type: 'borrow',
                 timeStamp:new Date(Date.now()+19000),
@@ -222,10 +187,7 @@ export const handlers = [
             {
                 Coin: {
                     coinId: 1,
-                    name: coinName,
                     symbol: 'BTC',
-                    market_type: marketType,
-                    image: '/BTC.png',
                 },
                 type: 'buy',
                 timeStamp: new Date(Date.now()+28000),
@@ -236,10 +198,7 @@ export const handlers = [
             {
                 Coin: {
                     coinId: 1,
-                    name: coinName,
                     symbol: 'BTC',
-                    market_type: marketType,
-                    image: '/BTC.png',
                 },
                 type: 'sell',
                 timeStamp: new Date(Date.now()+35000),
@@ -250,10 +209,7 @@ export const handlers = [
             {
                 Coin: {
                     coinId: 1,
-                    name: coinName,
                     symbol: 'BTC',
-                    market_type: marketType,
-                    image: '/BTC.png',
                 },
                 type: 'sell',
                 timeStamp: new Date(Date.now()+45000),
@@ -283,7 +239,6 @@ export const handlers = [
                 id:1,
                 timeStamp:today,
                 coin_symbol:'BTC',
-                market: 'binance-bitthumb',
                 gap: 0.3533,
                 isSuccess: false,
             },
@@ -291,7 +246,6 @@ export const handlers = [
                 id:2,
                 timeStamp:today,
                 coin_symbol:'LMC',
-                market: 'binance-bitthumb',
                 gap: 0.4223,
                 isSuccess: true,
             },
@@ -299,7 +253,6 @@ export const handlers = [
                 id:3,
                 timeStamp:today,
                 coin_symbol:'ATM',
-                market: 'binance-bitthumb',
                 gap: 0.544533,
                 isSuccess: true,
             },
@@ -307,7 +260,6 @@ export const handlers = [
                 id:4,
                 timeStamp:today,
                 coin_symbol:'KCH',
-                market: 'binance-bitthumb',
                 gap: 0.744533,
                 isSuccess: false,
             },

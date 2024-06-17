@@ -5,6 +5,7 @@ export interface Trade{
     type:'buy'|'sell'|'borrow',
     timeStamp:Date,
     price: number,
-    market?: 'binance-bitthumb' | 'binance-ubbit',
+    market?: string,
     isSuccess: boolean,
+    details?:string,
 }

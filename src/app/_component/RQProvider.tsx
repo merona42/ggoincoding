@@ -16,7 +16,8 @@ function RQProvider({children}: Props) {
           refetchOnWindowFocus: false,
           retryOnMount: true,
           refetchOnReconnect: false,
-          retry: false,
+          retry: 3,
+          retryDelay: attemptIndex => Math.min(1000 * 2 ** attemptIndex, 30000), // 지수 백오프 (최대 30초)
         },
       },
     })

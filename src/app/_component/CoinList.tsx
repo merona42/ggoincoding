@@ -1,7 +1,7 @@
 "use client"
 
 import { useQuery } from "@tanstack/react-query"
-import { getSuccessCoins } from "../_lib/getSuccessCoins"
+import { getCoins } from "../_lib/getCoins"
 import { Coin as ICoin} from "@/model/Coin"
 import Coin from "./Coin"
 
@@ -10,13 +10,13 @@ type Probs = {
 }
 export default function CoinList({today}:Probs){
     const {data}= useQuery({
-        queryKey:['coins','success',today.toDateString()],
-        queryFn: getSuccessCoins
+        queryKey:['coins',today.toDateString()],
+        queryFn: getCoins
     })
 
     if(data && data.length>0){
         return (data?.map((coin)=>(
-            <Coin key={coin.coinId} coin={coin}></Coin>
+            <Coin key={coin.coinId} coin={coin.symbol}></Coin>
         )))
     }
     return <div style={{color:'gray'}}>코인 데이터가 없습니다.</div>

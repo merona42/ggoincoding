@@ -10,12 +10,13 @@ import cx from "classnames";
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko'; // 한국어 로케일을 임포트
 import  CoinLogTable  from "./CoinLogTable";
-
+import { Coin as ICoin } from "@/model/Coin";
 dayjs.locale('ko'); // 한국어 로케일을 설정
 export default function Home() {
     const{selectedCoin,setSelectedCoin} = useContext(SelectedCoinContext);
     const { selectedDate, setSelectedDate } = useContext(SelectedDateContext);
     const [isShouldShow, setIsShouldShow] = useState(false);
+    const [selectedShowCoin, setSelectedShowCoin] = useState<ICoin | undefined>();
     const onClickCalender=()=>{
         setIsShouldShow(!isShouldShow);
     }
@@ -47,7 +48,7 @@ export default function Home() {
                     />}
             </div>
             <div className={style.showLogsDiv}>
-                <CoinLogTable today={selectedDate} /> 
+                <CoinLogTable today={selectedDate} selectedShowCoin={selectedShowCoin} setSelectedShowCoin={setSelectedShowCoin}/> 
             </div>
             <div>
                 ㄴ

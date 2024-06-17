@@ -9,6 +9,7 @@ import annotationPlugin from 'chartjs-plugin-annotation'; // annotation 플러�
 import zoomPlugin from 'chartjs-plugin-zoom'; // zoom 플러그인 import
 import dayjs from "dayjs";
 import style from "./chart.module.css";
+import cx from "classnames";
 ChartJS.register(...registerables, annotationPlugin, zoomPlugin);
 
 type Props = {
@@ -30,13 +31,13 @@ export default function ChartComponent({ charts, trades }: Props) {
         labels: convertedCharts.map(chart => chart.timeStamp),
         datasets: [
             {
-                label: convertedCharts[0].Coin.market_type,
+                label: 'binance-bitthumb',
                 type: 'line' as const,
                 data: convertedCharts.map(chart => ({ x: chart.timeStamp, y: chart.price_diff * 100 })), // 값을 퍼센트로 변환
-                borderColor: convertedCharts[0].Coin.market_type === 'binance-bitthumb' ? 'rgb(46,209,205)' : 'rgb(112,225,36)',
-                backgroundColor: convertedCharts[0].Coin.market_type === 'binance-bitthumb' ? 'rgb(46,209,205)' : 'rgb(112,225,36)',
-                pointBackgroundColor: /*convertedCharts.map(chart => chart.price_diff >= threshold ? 'rgb(197,18,89)' :*/ (convertedCharts[0].Coin.market_type === 'binance-bitthumb' ? 'rgb(41,188,185)' : 'rgb(92,193,26)'),
-                pointBorderColor: /*convertedCharts.map(chart => chart.price_diff >= threshold ? 'rgb(197,18,89)' : */(convertedCharts[0].Coin.market_type === 'binance-bitthumb' ? 'rgb(41,188,185)' : 'rgb(92,193,26)'),
+                borderColor: 'rgb(46,209,205)',
+                backgroundColor: 'rgb(46,209,205)', 
+                pointBackgroundColor: /*convertedCharts.map(chart => chart.price_diff >= threshold ? 'rgb(197,18,89)' :*/ 'rgb(41,188,185)',
+                pointBorderColor: /*convertedCharts.map(chart => chart.price_diff >= threshold ? 'rgb(197,18,89)' : */'rgb(41,188,185)',
                 fill: false,
                 yAxisID: 'y-axis-1',
                 segment: {
@@ -51,14 +52,17 @@ export default function ChartComponent({ charts, trades }: Props) {
                     }
                 }
             },
-            ...(trades ? [{
-                label: 'Trades',
+            ...(trades ? trades.map((trade, index) => ({
+                label: trade.isSuccess ? (trade.type ) : 'fail',
                 type: 'bar' as const,
-                data: trades.map(trade => ({ x: new Date(trade.timeStamp), y: trade.price })),
-                backgroundColor: trades.map(trade => trade.isSuccess ? (trade.type === 'buy' ? 'green' : trade.type === 'sell' ? 'rgb(192,63,192)' : 'orange') : 'red'),
+                data: [{ x: new Date(trade.timeStamp), y: trade.price }],
+                backgroundColor: trade.isSuccess ? (trade.type === 'buy' ? 'green' : trade.type === 'sell' ? 'rgb(192,63,192)' : 'orange') : 'red',
                 barThickness: 2,
                 yAxisID: 'y-axis-2',
-            }] : [])
+                className: cx({
+                    [style.isSelected]: trade.isSuccess,
+                })
+            })) : [])
         ],
     };
 
