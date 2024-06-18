@@ -1,10 +1,15 @@
 .coinButton{
-    width: 100%;
+    /* width: 100%;
     border-top: 1px solid gray;
     display: flex;
     flex-direction: row;
     transition-duration: 0.2s;
-    transition-property: background-color;
+    transition-property: background-color; */
+    width: 100%;
+    border-top: 1px solid #ddd;
+    display: flex;
+    flex-direction: row;
+    transition: background-color 0.2s;
 }
 .coinButton:hover{
     background-color: rgba(15,20,25, 0.1); 

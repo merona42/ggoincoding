@@ -48,7 +48,7 @@ export default function CoinLogTable({today,scrollToShowDiv} : Probs) {
                         <td>{log.Coin.symbol}</td>
                         <td>{dayjs(log.timeStamp).format('YYYY-MM-DD HH:mm:ss')}</td>
                         <td>{log.type}</td>
-                        <td>{log.type === '판매 성공'? log.price : '-'}</td>
+                        <td>{(log.type === '판매 성공' || log.type === '바이백 성공')? log.price : '-'}</td>
                     </tr>
                 ))}
             </tbody>

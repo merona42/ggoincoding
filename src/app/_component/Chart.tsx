@@ -35,7 +35,7 @@ const borderPlugin: Plugin<'bar' | 'line'> = {
                                 const bar = meta.data[index];
                                 const { x: barX, y: barY, width: barWidth, height: barHeight } = bar.getProps(['x', 'y', 'width', 'height'], false);
                                 ctx.save();
-                                ctx.strokeStyle = 'red';
+                                ctx.strokeStyle = 'rgba(255,99,132,0.8)'; // red with transparency
                                 ctx.lineWidth = 2;
                                 ctx.strokeRect(barX - barWidth / 2 - 4, barY - 7, barWidth + 8, barHeight + 8);
                                 ctx.restore();
@@ -62,12 +62,12 @@ const ChartComponent = ({ charts, trades, selectedBar }: Props) => {
     const threshold = 0.03;
     const gapThreshold = 20000; // 20초를 밀리초로 변환
     const colorMappingTable: { [key: string]: string } = {
-        "판매 성공": 'rgb(29,232,237)',
-        "상환 성공": 'rgb(198,33,233)',
-        "전송 가능": 'rgb(96,220,20)',
-        "대출 성공": 'rgb(55,185,78)',
-        "전송 성공": 'rgb(53,77,187)',
-        "바이백 성공": 'rgb(226,221,14)',
+        "판매 성공": 'rgba(34,193,195,0.8)', // teal
+        "상환 성공": 'rgba(253,187,45,0.8)', // gold
+        "전송 가능": 'rgba(54,162,235,0.8)', // blue
+        "대출 성공": 'rgba(75,192,192,0.8)', // light teal
+        "전송 성공": 'rgba(255,159,64,0.8)', // orange
+        "바이백 성공": 'rgba(255,99,132,0.8)', // red
     };
 
     // 모든 timeStamp 값을 Date 객체로 변환합니다.
@@ -83,7 +83,7 @@ const ChartComponent = ({ charts, trades, selectedBar }: Props) => {
                 label: key,
                 type: 'bar' as const,
                 data: [],
-                backgroundColor: trade.isSuccess ? colorMappingTable[trade.type] : 'rgb(154,24,53)',
+                backgroundColor: trade.isSuccess ? colorMappingTable[trade.type] : 'rgba(255,69,0,0.8)', // red for failure
                 yAxisID: 'y-axis-2',
             };
         }
@@ -98,11 +98,11 @@ const ChartComponent = ({ charts, trades, selectedBar }: Props) => {
                 label: 'binance-bitthumb',
                 type: 'line' as const,
                 data: convertedCharts.map(chart => ({ x: chart.timeStamp, y: chart.price_diff * 100 })), // 값을 퍼센트로 변환
-                borderColor: 'rgb(75,168,40)',
-                backgroundColor: 'rgb(75,168,40)',
-                pointBackgroundColor: 'rgb(43,95,22)',
-                pointBorderColor: 'rgb(43,95,22)',
-                fill: false,
+                borderColor: 'rgba(75,192,192,0.8)', // light teal
+                backgroundColor: 'rgba(75,192,192,0.2)',
+                pointBackgroundColor: 'rgba(75,192,192,0.8)',
+                pointBorderColor: 'rgba(75,192,192,0.8)',
+                fill: true,
                 yAxisID: 'y-axis-1',
                 segment: {
                     borderColor: (ctx) => {
@@ -131,6 +131,9 @@ const ChartComponent = ({ charts, trades, selectedBar }: Props) => {
                 grid: {
                     display: false, // 수직 격자선을 비활성화
                 },
+                ticks: {
+                    color: '#4e5d6c'
+                },
             },
             'y-axis-1': {
                 type: 'linear',
@@ -138,7 +141,11 @@ const ChartComponent = ({ charts, trades, selectedBar }: Props) => {
                 ticks: {
                     callback: function (value) {
                         return `${value}%`; // Y축 레이블에 퍼센트 표시
-                    }
+                    },
+                    color: '#4e5d6c'
+                },
+                grid: {
+                    color: 'rgba(78, 93, 108, 0.1)'
                 }
             },
             'y-axis-2': {
@@ -147,6 +154,9 @@ const ChartComponent = ({ charts, trades, selectedBar }: Props) => {
                 grid: {
                     drawOnChartArea: false,
                 },
+                ticks: {
+                    color: '#4e5d6c'
+                }
             }
         },
         plugins: {
@@ -156,11 +166,13 @@ const ChartComponent = ({ charts, trades, selectedBar }: Props) => {
                         type: 'line',
                         yMin: threshold * 100, // 값을 퍼센트로 변환
                         yMax: threshold * 100, // 값을 퍼센트로 변환
-                        borderColor: 'red',
-                        borderWidth: 1,
+                        borderColor: 'rgba(217, 83, 79, 0.8)', // deep red
+                        borderWidth: 2,
                         label: {
                             content: 'Threshold',
-                            position: 'end'
+                            position: 'end',
+                            backgroundColor: 'rgba(217, 83, 79, 0.7)',
+                            color: 'white'
                         }
                     }
                 }
@@ -178,7 +190,7 @@ const ChartComponent = ({ charts, trades, selectedBar }: Props) => {
                         } else if (context.dataset.type === 'bar') {
                             const dataPoint = context.raw as { x: Date, y: number };
                             const trade = trades!.find(trade => new Date(trade.timeStamp).getTime() === dataPoint.x.getTime());
-                            return `Type: ${trade?.type}\nTime: ${dayjs(trade?.timeStamp).format('HH:mm:ss')}\n`+ (trade?.type==='판매 성공' ? `가격 : ${trade.price}` : '');
+                            return `Type: ${trade?.type}\nTime: ${dayjs(trade?.timeStamp).format('HH:mm:ss')}\n`+ ((trade?.type==='판매 성공' || trade?.type==='바이백 성공') ? `가격 : ${trade.price}` : '');
                         }
                         return '';
                     }
