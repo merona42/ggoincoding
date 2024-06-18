@@ -7,7 +7,7 @@ import { QueryFunction } from "@tanstack/react-query";
 export const getTrades : QueryFunction<ITrade[],[_1:string, coinName:string, today:string]>
  = async({queryKey})=>{
     const [_1,coinName,today] = queryKey;
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/trades/${coinName}/${today}`,{
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/trades/${coinName}/${today}/route`,{
         next:{
             tags: ['trades',coinName,today]
         }

@@ -1,3 +1,4 @@
+//coins
 import { NextApiRequest, NextApiResponse } from 'next';
 import sequelize from '@/lib/sequelize';
 import { QueryTypes } from 'sequelize';

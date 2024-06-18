@@ -4,7 +4,7 @@ import { QueryFunction } from "@tanstack/react-query";
 
 export const getTradeCounts : QueryFunction<TradeCount>
  = async()=>{
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/tradeCounts`,{
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/tradeCounts/route`,{
         next:{
             tags: ['tradeCounts']
         }

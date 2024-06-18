@@ -2,7 +2,7 @@ import { HttpResponse, http } from "msw";
 
 
 export const handlers = [
-    http.get('/api/coins/:today',async ({request,params})=>{
+    http.get('/api/coins/:today/route',async ({request,params})=>{
         // return HttpResponse.json([]);
         return HttpResponse.json([
             {
@@ -37,16 +37,14 @@ export const handlers = [
  
 
         }),
-    http.get('/api/charts/:coinName/:today',({request,params})=>{
+    http.get('/api/charts/:coinName/:today/route',({request,params})=>{
         const {coinName,today} = params;
         let time = new Date(Date.now());
         return HttpResponse.json([
             {
                 Coin: {
                     coinId: 1,
-                    name: coinName,
                     symbol: 'BTC',
-                    image: '/BTC.png',
                 },
                 timeStamp:"2024-06-18T00:31:00Z",
                 price_diff:0.01121
@@ -54,9 +52,7 @@ export const handlers = [
             {
                 Coin: {
                     coinId: 1,
-                    name: coinName,
                     symbol: 'BTC',
-                    image: '/BTC.png',
                 },
                 timeStamp:"2024-06-18T00:31:10Z",
                 price_diff:0.0211
@@ -64,9 +60,7 @@ export const handlers = [
             {
                 Coin: {
                     coinId: 1,
-                    name: coinName,
                     symbol: 'BTC',
-                    image: '/BTC.png',
                 },
                 timeStamp:"2024-06-18T00:31:20Z",
                 price_diff:0.032112,
@@ -75,9 +69,7 @@ export const handlers = [
             {
                 Coin: {
                     coinId: 1,
-                    name: coinName,
                     symbol: 'BTC',
-                    image: '/BTC.png',
                 },
                 timeStamp:"2024-06-18T00:31:25Z",
                 price_diff:0.04232,
@@ -86,9 +78,7 @@ export const handlers = [
             {
                 Coin: {
                     coinId: 1,
-                    name: coinName,
                     symbol: 'BTC',
-                    image: '/BTC.png',
                 },
                 timeStamp:"2024-06-18T00:31:30Z",
                 price_diff:0.031233,
@@ -96,9 +86,7 @@ export const handlers = [
             {
                 Coin: {
                     coinId: 1,
-                    name: coinName,
                     symbol: 'BTC',
-                    image: '/BTC.png',
                 },
                 timeStamp:"2024-06-18T00:31:40Z",
                 price_diff:0.05242,
@@ -106,9 +94,7 @@ export const handlers = [
             {
                 Coin: {
                     coinId: 1,
-                    name: coinName,
                     symbol: 'BTC',
-                    image: '/BTC.png',
                 },
                 timeStamp:"2024-06-18T00:31:50Z",
                 price_diff:0.06121,
@@ -116,9 +102,7 @@ export const handlers = [
             {
                 Coin: {
                     coinId: 1,
-                    name: coinName,
                     symbol: 'BTC',
-                    image: '/BTC.png',
                 },
                 timeStamp:"2024-06-18T00:32:00Z",
                 price_diff:0.041211,
@@ -126,9 +110,7 @@ export const handlers = [
             {
                 Coin: {
                     coinId: 1,
-                    name: coinName,
                     symbol: 'BTC',
-                    image: '/BTC.png',
                 },
                 timeStamp:"2024-06-18T00:32:10Z",
                 price_diff:0.071232,
@@ -137,9 +119,7 @@ export const handlers = [
             {
                 Coin: {
                     coinId: 1,
-                    name: coinName,
                     symbol: 'BTC',
-                    image: '/BTC.png',
                 },
                 timeStamp:"2024-06-18T00:32:20Z",
                 price_diff:0.02121,
@@ -148,9 +128,7 @@ export const handlers = [
             {
                 Coin: {
                     coinId: 1,
-                    name: coinName,
                     symbol: 'BTC',
-                    image: '/BTC.png',
                 },
                 timeStamp:"2024-06-18T00:32:30Z",
                 price_diff:0.05121,
@@ -159,9 +137,7 @@ export const handlers = [
             {
                 Coin: {
                     coinId: 1,
-                    name: coinName,
                     symbol: 'BTC',
-                    image: '/BTC.png',
                 },
                 timeStamp:"2024-06-18T00:32:40Z",
                 price_diff:0.02121,
@@ -170,7 +146,7 @@ export const handlers = [
             
         ])
     }),
-    http.get('/api/trades/:coinName/:today',({request,params})=>{
+    http.get('/api/trades/:coinName/:today/route',({request,params})=>{
         const {coinName,today} = params;
         // return HttpResponse.json([]);
         return HttpResponse.json([
@@ -179,47 +155,59 @@ export const handlers = [
                     coinId: 1,
                     symbol: 'BTC',
                 },
-                type: 'borrow',
+                type: '전송 불가',
                 timeStamp:new Date("2024-06-18T00:31:00Z"),
                 price: 30000,
-                isSuccess: true,
+                isSuccess: false,
+                tradeId:1
             },
             {
                 Coin: {
                     coinId: 1,
-                    symbol: 'BTC',
+                    symbol: 'eth',
                 },
-                type: 'buy',
+                type: '전송 불가',
                 timeStamp: new Date("2024-06-18T00:31:10Z"),
                 price: 30000,
-                market: 'bitthumb',
-                isSuccess: true,
+                isSuccess: false,
+                tradeId:2,
             },
             {
                 Coin: {
                     coinId: 1,
-                    symbol: 'BTC',
+                    symbol: 'xrp',
                 },
-                type: 'sell',
+                type: '전송 실패',
                 timeStamp: new Date("2024-06-18T00:31:20Z"),
                 price: 20000,
-                market: 'binance',
-                isSuccess: true,
+                isSuccess: false,
+                tradeId:3
             },
             {
                 Coin: {
                     coinId: 1,
-                    symbol: 'BTC',
+                    symbol: 'ardr',
                 },
-                type: 'sell',
+                type: '판매 성공',
                 timeStamp: new Date("2024-06-18T00:31:30Z"),
                 price: 20000,
-                market: 'binance',
-                isSuccess: false,
+                isSuccess: true,
+                tradeId:4
+            },
+            {
+                Coin: {
+                    coinId: 1,
+                    symbol: 'ardr',
+                },
+                type: '판매 성공',
+                timeStamp: new Date("2024-06-18T00:31:40Z"),
+                price: 20000,
+                isSuccess: true,
+                tradeId:5
             },
         ])
     }),
-    http.get('/api/tradeCounts',()=>{
+    http.get('/api/tradeCounts/route',()=>{
         return HttpResponse.json({
             '2024-06-03':{success: 2, failure: 4},
             '2024-06-08':{success: 13, failure: 0},
@@ -228,40 +216,54 @@ export const handlers = [
             '2024-06-14':{success: 3, failure: 0},
             '2024-06-15':{success: 0, failure: 0},
             '2024-06-16':{success: 0, failure: 1},
+            '2024-06-17':{success: 0, failure: 1},
+            '2024-06-18':{success: 0, failure: 1},
         })
     })
     ,
-    http.get('/api/logs/:today',({request,params})=>{
+    http.get('/api/logs/:today/route',({request,params})=>{
         const {today} = params;
         let time = new Date(Date.now());
         return HttpResponse.json([
             {
-                id:1,
+                Coin:{
+                    coinId:1,
+                    symbol:'BTC',
+                },
                 timeStamp:"2024-06-18T00:31:00Z",
-                coin_symbol:'BTC',
-                gap: 0.3533,
                 isSuccess: false,
+                tradeId: 1,
+                type: "전송 불가"
             },
             {
-                id:2,
+                Coin:{
+                    coinId:1,
+                    symbol:'eth',
+                },
                 timeStamp:"2024-06-18T00:31:10Z",
-                coin_symbol:'ETH',
-                gap: 0.4223,
-                isSuccess: true,
-            },
-            {
-                id:3,
-                timeStamp:"2024-06-18T00:31:20Z",
-                coin_symbol:'xrp',
-                gap: 0.544533,
-                isSuccess: true,
-            },
-            {
-                id:4,
-                timeStamp:"2024-06-18T00:31:30Z",
-                coin_symbol:'ardr',
-                gap: 0.744533,
                 isSuccess: false,
+                tradeId: 2,
+                type: "전송 불가"
+            },
+            {
+                Coin:{
+                    coinId:1,
+                    symbol:'xrp',
+                },
+                timeStamp:"2024-06-18T00:31:20Z",
+                isSuccess: false,
+                tradeId: 3,
+                type: "전송 불가"
+            },
+            {
+                Coin:{
+                    coinId:1,
+                    symbol:'ardr',
+                },
+                timeStamp:"2024-06-18T00:31:30Z",
+                isSuccess: false,
+                tradeId: 4,
+                type: "전송 불가"
             },
         ])
     })

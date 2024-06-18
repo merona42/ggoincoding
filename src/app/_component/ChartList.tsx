@@ -14,11 +14,6 @@ type Probs={
 export default function ChartList({coin, today}:Probs){
 
     const {selectedBar,setSelectedBar} = useContext(SelectedBarContext);
-    if(!coin){
-        return(<div>
-            선택된 코인이 없습니다.
-        </div>)
-    }
     const {data : chartData}= useQuery({
         queryKey:['charts',coin as string,dayjs(today).format('YYYY-MM-DD')],
         queryFn: getCharts,
@@ -27,6 +22,13 @@ export default function ChartList({coin, today}:Probs){
         queryKey:['trades',coin as string,dayjs(today).format('YYYY-MM-DD')],
         queryFn: getTrades,
     })
+    
+    if(!coin){
+        return(<div>
+            선택된 코인이 없습니다.
+        </div>)
+    }
+    
     return chartData?.length ? <Chart charts={chartData} trades={tradeData} selectedBar={selectedBar}/>: <>
         <div>
             아직 차트가 없습니다.

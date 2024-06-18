@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useEffect, MutableRefObject } from "react";
+import React, { useRef, useEffect } from "react";
 import { Chart as IChart } from "@/model/Chart";
 import { Chart as ChartJS, registerables, ChartData, ChartOptions, TooltipItem, ChartTypeRegistry, Plugin } from "chart.js";
 import { Chart } from "react-chartjs-2";
@@ -60,22 +60,38 @@ export default function ChartComponent({ charts, trades, selectedBar }: Props) {
     const chartRef = useRef<ChartJS<'bar' | 'line', { x: Date, y: number }[], unknown>>(null);
     const threshold = 0.03;
     const gapThreshold = 20000; // 20초를 밀리초로 변환
-    const colorMappingTable: { [key: string]: string }={
-        "전송 불가":'red',
-        "대출 실패":'red',
-        "전송 실패":'red',
-        "판매 실패 : 오류 발생":'red',
-        "판매 실패 : 프리미엄 미달":'red',
-        "바이백 실패":'red',
-        "상환 실패":'red',
-        "판매 성공":'rgb(29,232,237)',
-        "상환 성공":'rgb(198,33,233)',
-    }
+    const colorMappingTable: { [key: string]: string } = {
+        "전송 불가": 'red',
+        "대출 실패": 'red',
+        "전송 실패": 'red',
+        "판매 실패 : 오류 발생": 'red',
+        "판매 실패 : 프리미엄 미달": 'red',
+        "바이백 실패": 'red',
+        "상환 실패": 'red',
+        "판매 성공": 'rgb(29,232,237)',
+        "상환 성공": 'rgb(198,33,233)',
+    };
+
     // 모든 timeStamp 값을 Date 객체로 변환합니다.
     const convertedCharts = charts.map(chart => ({
         ...chart,
         timeStamp: new Date(chart.timeStamp)
     }));
+
+    const groupedTrades = trades ? trades.reduce((acc, trade) => {
+        const key = trade.isSuccess ? trade.type : '실패';
+        if (!acc[key]) {
+            acc[key] = {
+                label: key,
+                type: 'bar' as const,
+                data: [],
+                backgroundColor: trade.isSuccess ? colorMappingTable[trade.type] : 'red',
+                yAxisID: 'y-axis-2',
+            };
+        }
+        acc[key].data.push({ x: new Date(trade.timeStamp), y: trade.price });
+        return acc;
+    }, {} as { [key: string]: ChartData<"bar", { x: Date, y: number }[], Date>["datasets"][0] }) : {};
 
     const combinedChartData: ChartData<"bar" | "line", { x: Date, y: number }[], Date> = {
         labels: convertedCharts.map(chart => chart.timeStamp),
@@ -100,13 +116,7 @@ export default function ChartComponent({ charts, trades, selectedBar }: Props) {
                     }
                 }
             },
-            ...(trades ? trades.map((trade, index) => ({
-                label: trade.isSuccess ? trade.type : '실패',
-                type: 'bar' as const,
-                data: [{ x: new Date(trade.timeStamp), y: trade.price }],
-                backgroundColor: trade.isSuccess ?  colorMappingTable[trade.type]: 'red',
-                yAxisID: 'y-axis-2',
-            })) : [])
+            ...Object.values(groupedTrades)
         ],
     };
 
@@ -168,9 +178,9 @@ export default function ChartComponent({ charts, trades, selectedBar }: Props) {
                             const chart = convertedCharts[chartIndex];
                             return `Time: ${dayjs(chart.timeStamp).format('HH:mm:ss')}, Price Diff: ${(chart.price_diff * 100).toFixed(2)}%`; // 툴팁에 퍼센트 표시
                         } else if (context.dataset.type === 'bar') {
-                            const tradeIndex = context.dataIndex;
-                            const trade = trades![tradeIndex];
-                            return `Type: ${trade.type}, Time: ${dayjs(trade.timeStamp).format('HH:mm:ss')}, Price: ${trade.price}` + `, ` + `성공여부: ` + (trade.isSuccess ? '성공' : '실패');
+                            const dataPoint = context.raw as { x: Date, y: number };
+                            const trade = trades!.find(trade => new Date(trade.timeStamp).getTime() === dataPoint.x.getTime());
+                            return `Type: ${trade?.type}, Time: ${dayjs(trade?.timeStamp).format('HH:mm:ss')}, Price: ${trade?.price}` + `, ` + `성공여부: ` + (trade?.isSuccess ? '성공' : '실패');
                         }
                         return '';
                     }
