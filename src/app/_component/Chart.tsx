@@ -87,7 +87,7 @@ const ChartComponent = ({ charts, trades, selectedBar }: Props) => {
                 yAxisID: 'y-axis-2',
             };
         }
-        acc[key].data.push({ x: new Date(trade.timeStamp), y: trade.price });
+        acc[key].data.push({ x: new Date(trade.timeStamp), y: 30000 });
         return acc;
     }, {} as { [key: string]: ChartData<"bar", { x: Date, y: number }[], Date>["datasets"][0] }) : {};
 
@@ -98,10 +98,10 @@ const ChartComponent = ({ charts, trades, selectedBar }: Props) => {
                 label: 'binance-bitthumb',
                 type: 'line' as const,
                 data: convertedCharts.map(chart => ({ x: chart.timeStamp, y: chart.price_diff * 100 })), // 값을 퍼센트로 변환
-                borderColor: 'brown',
-                backgroundColor: 'brown',
-                pointBackgroundColor: 'brown',
-                pointBorderColor: 'brown',
+                borderColor: 'rgb(75,168,40)',
+                backgroundColor: 'rgb(75,168,40)',
+                pointBackgroundColor: 'rgb(43,95,22)',
+                pointBorderColor: 'rgb(43,95,22)',
                 fill: false,
                 yAxisID: 'y-axis-1',
                 segment: {

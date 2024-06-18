@@ -35,8 +35,6 @@ export default function CoinLogTable({today,scrollToShowDiv} : Probs) {
                     <th>Timestamp</th>
                     <th>Type</th>
                     <th>Price</th>
-                    <th>Is Success</th>
-                    <th>Details</th>
 
                 </tr>
             </thead>
@@ -50,8 +48,7 @@ export default function CoinLogTable({today,scrollToShowDiv} : Probs) {
                         <td>{log.Coin.symbol}</td>
                         <td>{dayjs(log.timeStamp).format('YYYY-MM-DD HH:mm:ss')}</td>
                         <td>{log.type}</td>
-                        <td>{log.price}</td>
-                        <td>{log.isSuccess ? '성공' : '실패'}</td>
+                        <td>{log.type === '판매 성공'? log.price : '-'}</td>
                     </tr>
                 ))}
             </tbody>

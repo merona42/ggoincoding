@@ -12,7 +12,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         console.log('Chart Connection has been established successfully.');
 
         const results = await sequelize.query(
-            `SELECT * FROM chart_logs WHERE DATE(CONVERT_TZ(timestamp, '+00:00', '+09:00')) = '${today}' AND coin_symbol = '${coinName}'`,
+            `SELECT * FROM chart_logs WHERE DATE(CONVERT_TZ(timestamp, '+09:00', '+00:00')) = '${today}' AND coin_symbol = '${coinName}'`,
             { 
                 type: QueryTypes.SELECT
             }
