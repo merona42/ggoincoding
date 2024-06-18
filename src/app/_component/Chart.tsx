@@ -1,3 +1,4 @@
+"use client";
 import React, { useRef, useEffect } from "react";
 import { Chart as IChart } from "@/model/Chart";
 import { Chart as ChartJS, registerables, ChartData, ChartOptions, TooltipItem, ChartTypeRegistry, Plugin } from "chart.js";
@@ -56,20 +57,17 @@ type ExtendedChartOptions<TType extends keyof ChartTypeRegistry> = ChartOptions<
     };
 };
 
-export default function ChartComponent({ charts, trades, selectedBar }: Props) {
+const ChartComponent = ({ charts, trades, selectedBar }: Props) => {
     const chartRef = useRef<ChartJS<'bar' | 'line', { x: Date, y: number }[], unknown>>(null);
     const threshold = 0.03;
     const gapThreshold = 20000; // 20초를 밀리초로 변환
     const colorMappingTable: { [key: string]: string } = {
-        "전송 불가": 'red',
-        "대출 실패": 'red',
-        "전송 실패": 'red',
-        "판매 실패 : 오류 발생": 'red',
-        "판매 실패 : 프리미엄 미달": 'red',
-        "바이백 실패": 'red',
-        "상환 실패": 'red',
         "판매 성공": 'rgb(29,232,237)',
         "상환 성공": 'rgb(198,33,233)',
+        "전송 가능": 'rgb(96,220,20)',
+        "대출 성공": 'rgb(55,185,78)',
+        "전송 성공": 'rgb(53,77,187)',
+        "바이백 성공": 'rgb(226,221,14)',
     };
 
     // 모든 timeStamp 값을 Date 객체로 변환합니다.
@@ -100,10 +98,10 @@ export default function ChartComponent({ charts, trades, selectedBar }: Props) {
                 label: 'binance-bitthumb',
                 type: 'line' as const,
                 data: convertedCharts.map(chart => ({ x: chart.timeStamp, y: chart.price_diff * 100 })), // 값을 퍼센트로 변환
-                borderColor: 'rgb(46,209,205)',
-                backgroundColor: 'rgb(46,209,205)',
-                pointBackgroundColor: 'rgb(41,188,185)',
-                pointBorderColor: 'rgb(41,188,185)',
+                borderColor: 'brown',
+                backgroundColor: 'brown',
+                pointBackgroundColor: 'brown',
+                pointBorderColor: 'brown',
                 fill: false,
                 yAxisID: 'y-axis-1',
                 segment: {
@@ -180,7 +178,7 @@ export default function ChartComponent({ charts, trades, selectedBar }: Props) {
                         } else if (context.dataset.type === 'bar') {
                             const dataPoint = context.raw as { x: Date, y: number };
                             const trade = trades!.find(trade => new Date(trade.timeStamp).getTime() === dataPoint.x.getTime());
-                            return `Type: ${trade?.type}, Time: ${dayjs(trade?.timeStamp).format('HH:mm:ss')}, Price: ${trade?.price}` + `, ` + `성공여부: ` + (trade?.isSuccess ? '성공' : '실패');
+                            return `Type: ${trade?.type}\nTime: ${dayjs(trade?.timeStamp).format('HH:mm:ss')}\nPrice: ${trade?.price}\n`+ `성공여부: ` + (trade?.isSuccess ? '성공\n' : '실패\n');
                         }
                         return '';
                     }
@@ -221,3 +219,5 @@ export default function ChartComponent({ charts, trades, selectedBar }: Props) {
         </div>
     );
 }
+
+export default ChartComponent;

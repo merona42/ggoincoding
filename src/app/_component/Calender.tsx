@@ -27,7 +27,6 @@ export default function Calender({isShouldShow, setIsShouldShow}:Probs ){
     })
     const isDisabled = (date : Date) => {
       const dateString =dayjs(date).format('YYYY-MM-DD');
-      console.log(dateString);
       const trades = tradeCountData ? tradeCountData[dateString] : undefined;
       if(trades?.success===0 && trades?.failure===0)return true;
       return !trades;
@@ -59,8 +58,6 @@ export default function Calender({isShouldShow, setIsShouldShow}:Probs ){
       );
     }
     
-   
-    console.log(selectedDate);
     return (
       <DayPicker
         locale={ko}
