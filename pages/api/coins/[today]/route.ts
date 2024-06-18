@@ -13,7 +13,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         // 데이터 쿼리 실행
         const result = await sequelize.query(
-            `SELECT coin_symbol FROM successed_coins WHERE DATE(CONVERT_TZ(timestamp, '+00:00', '+09:00')) = '${today}'`,
+            `SELECT coin_symbol FROM successed_coins WHERE DATE(CONVERT_TZ(date, '+00:00', '+09:00')) = '${today}'`,
             { type: QueryTypes.SELECT }
         );
 
