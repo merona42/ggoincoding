@@ -83,7 +83,7 @@ const ChartComponent = ({ charts, trades, selectedBar }: Props) => {
                 label: key,
                 type: 'bar' as const,
                 data: [],
-                backgroundColor: trade.isSuccess ? colorMappingTable[trade.type] : 'red',
+                backgroundColor: trade.isSuccess ? colorMappingTable[trade.type] : 'rgb(154,24,53)',
                 yAxisID: 'y-axis-2',
             };
         }
@@ -174,11 +174,11 @@ const ChartComponent = ({ charts, trades, selectedBar }: Props) => {
                         if (context.dataset.type === 'line') {
                             const chartIndex = context.dataIndex;
                             const chart = convertedCharts[chartIndex];
-                            return `Time: ${dayjs(chart.timeStamp).format('HH:mm:ss')}, Price Diff: ${(chart.price_diff * 100).toFixed(2)}%`; // 툴팁에 퍼센트 표시
+                            return `Time: ${dayjs(chart.timeStamp).format('HH:mm:ss')}, 차익: ${(chart.price_diff * 100).toFixed(2)}%`; // 툴팁에 퍼센트 표시
                         } else if (context.dataset.type === 'bar') {
                             const dataPoint = context.raw as { x: Date, y: number };
                             const trade = trades!.find(trade => new Date(trade.timeStamp).getTime() === dataPoint.x.getTime());
-                            return `Type: ${trade?.type}\nTime: ${dayjs(trade?.timeStamp).format('HH:mm:ss')}\nPrice: ${trade?.price}\n`+ `성공여부: ` + (trade?.isSuccess ? '성공\n' : '실패\n');
+                            return `Type: ${trade?.type}\nTime: ${dayjs(trade?.timeStamp).format('HH:mm:ss')}\n`+ (trade?.type==='판매 성공' ? `가격 : ${trade.price}` : '');
                         }
                         return '';
                     }

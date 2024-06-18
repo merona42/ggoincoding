@@ -40,6 +40,7 @@ export const handlers = [
     http.get('/api/charts/:coinName/:today/route',({request,params})=>{
         const {coinName,today} = params;
         let time = new Date(Date.now());
+
         return HttpResponse.json([
             {
                 Coin: {
@@ -153,20 +154,9 @@ export const handlers = [
             {
                 Coin: {
                     coinId: 1,
-                    symbol: 'BTC',
-                },
-                type: '전송 불가',
-                timeStamp:new Date("2024-06-18T00:31:00Z"),
-                price: 30000,
-                isSuccess: false,
-                tradeId:1
-            },
-            {
-                Coin: {
-                    coinId: 1,
                     symbol: 'eth',
                 },
-                type: '전송 불가',
+                type: '전송 가능',
                 timeStamp: new Date("2024-06-18T00:31:10Z"),
                 price: 30000,
                 isSuccess: false,
@@ -177,7 +167,7 @@ export const handlers = [
                     coinId: 1,
                     symbol: 'xrp',
                 },
-                type: '전송 실패',
+                type: '대출 실패',
                 timeStamp: new Date("2024-06-18T00:31:20Z"),
                 price: 20000,
                 isSuccess: false,
@@ -188,7 +178,7 @@ export const handlers = [
                     coinId: 1,
                     symbol: 'ardr',
                 },
-                type: '판매 성공',
+                type: '대출 성공',
                 timeStamp: new Date("2024-06-18T00:31:30Z"),
                 price: 20000,
                 isSuccess: true,
@@ -199,8 +189,19 @@ export const handlers = [
                     coinId: 1,
                     symbol: 'ardr',
                 },
-                type: '판매 성공',
+                type: '전송 성공',
                 timeStamp: new Date("2024-06-18T00:31:40Z"),
+                price: 20000,
+                isSuccess: true,
+                tradeId:5
+            },
+            {
+                Coin: {
+                    coinId: 1,
+                    symbol: 'ardr',
+                },
+                type: '판매 성공',
+                timeStamp: new Date("2024-06-18T00:31:50Z"),
                 price: 20000,
                 isSuccess: true,
                 tradeId:5
@@ -217,7 +218,8 @@ export const handlers = [
             '2024-06-15':{success: 0, failure: 0},
             '2024-06-16':{success: 0, failure: 1},
             '2024-06-17':{success: 0, failure: 1},
-            '2024-06-18':{success: 0, failure: 1},
+            '2024-06-18':{success: 4, failure: 1},  
+            '2024-06-19':{success: 4, failure: 1},
         })
     })
     ,
@@ -228,22 +230,12 @@ export const handlers = [
             {
                 Coin:{
                     coinId:1,
-                    symbol:'BTC',
-                },
-                timeStamp:"2024-06-18T00:31:00Z",
-                isSuccess: false,
-                tradeId: 1,
-                type: "전송 불가"
-            },
-            {
-                Coin:{
-                    coinId:1,
                     symbol:'eth',
                 },
                 timeStamp:"2024-06-18T00:31:10Z",
-                isSuccess: false,
+                isSuccess: true,
                 tradeId: 2,
-                type: "전송 불가"
+                type: "전송 가능"
             },
             {
                 Coin:{
@@ -253,7 +245,7 @@ export const handlers = [
                 timeStamp:"2024-06-18T00:31:20Z",
                 isSuccess: false,
                 tradeId: 3,
-                type: "전송 불가"
+                type: "대출 실패"
             },
             {
                 Coin:{
@@ -261,9 +253,30 @@ export const handlers = [
                     symbol:'ardr',
                 },
                 timeStamp:"2024-06-18T00:31:30Z",
-                isSuccess: false,
+                isSuccess: true,
                 tradeId: 4,
-                type: "전송 불가"
+                type: "대출 성공"
+            },
+            {
+                Coin:{
+                    coinId:1,
+                    symbol:'ardr',
+                },
+                timeStamp:"2024-06-18T00:31:40Z",
+                isSuccess: true,
+                tradeId: 5,
+                type: "전송 성공"
+            },
+            {
+                Coin:{
+                    coinId:1,
+                    symbol:'ardr',
+                },
+                timeStamp:"2024-06-18T00:31:50Z",
+                isSuccess: true,
+                tradeId: 6,
+                type: "판매 성공",
+                price: 20000
             },
         ])
     })
